@@ -1,3 +1,4 @@
+# 마스터3 - 워커3개로 구성
 apiVersion: kind.x-k8s.io/v1alpha4
 kind: Cluster
 nodes:

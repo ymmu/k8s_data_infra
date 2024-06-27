@@ -1,0 +1,27 @@
+#!/bin/bash
+# 최신 웹 콘텐츠를 깃헙에서 다운받아 컨테이너에 저장
+
+# 컨텐츠의 URL에 대한 환경 변수가 설정되어 있지 않으면 종료
+if [ -z "$CONTENTS_SOURCE_URL" ]; then
+  echo "CONTENTS_SOURCE_URL 환경 변수가 설정되지 않았습니다."
+  exit 1
+fi
+
+# 처음에는 깃헙으로부터 컨텐츠를 그대로 다운로드
+git clone $CONTENTS_SOURCE_URL /data
+
+# sigterm을 수신시 처리
+save() {
+    exit 0
+}
+trap save TERM  # SIGTERM을 수신하면 save 함수를 실행
+
+
+# 컨텐츠를 주기적으로 업데이트하기 위해 1분마다 실행
+cd /data
+while true
+do
+  date
+  git pull
+  sleep 60
+done

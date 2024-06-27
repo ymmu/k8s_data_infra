@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: sidecar
+spec:
+  containers:
+  - name: main
+    image: alpine
+    resources:
+      limits:
+        cpu: "0.5"
+        memory: "512Mi"
+    # 무한히 스핀하고 기다립니다
+    command: [ sh, -c, -- ]
+    args: [ while true; do sleep 30; done; ]
+    volumeMounts:
+    - name: contents-volume
+      mountPath: /git
+
+  - name: cloner
+    image: myohyun/c-clone:0.3
+    resources:
+      limits:
+        cpu: "0.1"
+        memory: "128Mi"
+    env:
+    - name: CONTENTS_SOURCE_URL
+      value: "https://github.com/ymmu/k8s_data_infra"
+    volumeMounts:
+    - name: contents-volume
+      mountPath: /data
+
+  volumes:
+  - name: contents-volume
+    emptyDir: {}

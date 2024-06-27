@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: initcontainer
+spec:
+  containers:
+  - name: main
+    image: ubuntu
+    command: ['/bin/bash']
+    args: ['-c', 'tail -f /dev/null']
+    resources:
+      limits:
+        cpu: "0.5"
+        memory: "512Mi"
+    volumeMounts:
+    - name: shared-data
+      mountPath: /docs
+  initContainers:
+  - name: init
+    image: alpine
+    command: ['/bin/sh']
+    args: ['-c', 'mkdir /mnt/html; chown 33:33 /mnt/html']
+    resources:
+      limits:
+        cpu: "0.1"
+        memory: "128Mi"
+    volumeMounts:
+    - name: shared-data
+      mountPath: /mnt
+  volumes:
+  - name: shared-data
+    emptyDir: {}

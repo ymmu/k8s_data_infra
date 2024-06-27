@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: webapl
+spec:
+  containers:
+  - name: webapl
+    image: myohyun/webapl:0.1
+    resources:  # 안 들어가 있으면 apply시 오류 발생
+      limits:
+        cpu: "1"
+        memory: "512Mi"
+      requests:
+        cpu: "0.5"
+        memory: "256Mi"
+    livenessProbe:
+      httpGet:
+        path: /healthz
+        port: 3000
+      initialDelaySeconds: 3
+      periodSeconds: 5
+    readinessProbe:
+      httpGet:
+        path: /ready
+        port: 3000
+      initialDelaySeconds: 15
+      periodSeconds: 6
