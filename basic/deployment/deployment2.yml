@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-deploy
+spec:
+  replicas: 3
+  selector:
+    matchLabels: # 컨트롤러와 파드를 대응시키는 레이블
+      app: web  # 파드의 레이블. 파드에 해당 레이블이 있으면 컨트롤러가 관리하는 파드로 인식
+  template:  # 파드 템플릿
+    metadata:
+      labels:
+        app: web  # 파드의 레이블, 컨트롤러의 matchLabels와 일치해야 함
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.17
+        ports:
+        - containerPort: 80
+        resources:
+          limits:
+            cpu: "0.5"
+            memory: "512Mi"
+          requests:
+            cpu: "0.1"
+            memory: "256Mi"
