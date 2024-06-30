@@ -284,7 +284,7 @@ fe02fe4f6dd1   kindest/node:v1.25.16                "/usr/local/bin/entr…"   2
 
 ---
 ## 액티브 스탠바이 HA(아마도 high availability?)세팅
-- 예제는 노드 정지시켜서 다른 노드에 팟 생겨서 서비스가 계속 지속되는걸 보여주려고 한 예제이지만, 디비가 5분 동안 죽어있는게 과연 적절한 예제인건가 ㅋㅋ
+- 예제는 노드 정지시켜서 다른 노드에 팟 생겨서 서비스가 계속 지속되는걸 보여주려고 한 예제이지만, 디비가 5분 동안 죽어있는게 과연 적절한 거신가 ㅋㅋ
 - 그것보단 yml 파일 설정에서 로컬 세팅에서 persistant volumn 설정이 빠져있어서 이 부분 추가하면서 확인한 것들 기록
 
 
@@ -445,15 +445,17 @@ mysql-pvc   Bound    pvc-a48c71b0-4d46-4492-9cd6-c81843ff382b   1Gi        RWO  
 ```
 
 ---
+<br/>
+
 ### [트러블슈팅] mysql previlage 문제..
 
 그냥 그렇구나 하고 yaml 안 돌려봤으면 재미없었을 뻔..ㅎㅎㅎㅎ...
 트러블슈팅하면서 커멘드에도 익숙해지고 서비스/컨피그맵/시크릿도 강제 예습을 ㅋㅋㅋㅋ
-.
+  <br/>
 위에서 제대로 뜨는 줄 알았는데; pod restart가 엄청나게 일어나서 로그를 보니,
 LivenessProve에서 alive 응답을 못 받고 있다...  
 login 이 제대로 안되서 denied가 떨어지는 상황ㅠ
-
+  <br/>
 일단 yml의 env쪽 패스워드 변수를 모두 secret과 config로 바꿈.
 그리고 `MYSQL_ROOT_HOST` 설정도 추가..아무데서나 접속도 못하게 해둬서;
 
@@ -519,7 +521,7 @@ env:
 PORT-FORWARD로 잠깐 열어서 MYSQL benchmark 에 접속해보는 건 성공.
 
 **벤치마크 설치 (ubuntu 22.04)**
-벤치마크 설치하는 것도 있이었음;; 
+벤치마크 설치하는 것도 일이었음;; 
 처음에 메뉴얼로 설치했다가 또 지우고..하..
 
 ```
@@ -543,7 +545,7 @@ sudo snap install mysql-workbench-community
 ```
 
 **Portforward 로 접속**
-service 설정하고 -> sk 공유기에 설정해둔 외부 포트를 열어뒀는데..안됨;;
+service 설정하고 -> 공유기에 설정해둔 외부 포트를 열어뒀는데..안됨;;  
 그래도 Portforward로 localhost에서 접속은 해볼 수 있었다..
 ```bash
 > k port-forward pod/mysql-deploy-5b48f458f-gw9zb 30007:3306
