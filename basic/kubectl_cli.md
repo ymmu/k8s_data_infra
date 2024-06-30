@@ -1,6 +1,42 @@
 # kubectl 기본 cli
 
+`alias k=kubectl` 로 설정
 기본 cli 테스트와 궁금한 점들 정리
+
+---
+## 자주 쓰는 커멘드 정리
+```bash
+# 디플로이먼트, pod 정보 출력
+> k get deploy,po 
+
+> k get po -o wide
+
+# Pod 로그보기
+> k logs {pod이름} 
+
+# Pod 이벤트 보기
+> k get event | grep {pod이름}
+
+# Pod 정보 출력
+> k describe po {pod이름}
+
+# deployment모드에서 scale 수정
+> k scale replicas={수정된숫자} {디플로이명}/{파드명}
+
+# 롤백
+> k rollout undo deployment {파드명}
+
+# 가동 중인 파드를 다른 노드로 이동
+> k drain {노드명}
+# 노드에 새로운 파드의 스케줄 금지
+> k cordon {노드명}
+# 노드에 새로운 타드의 스케줄 재개
+> k uncordon {노드명}
+
+
+```
+
+
 
 ---
 ## pod 실행
