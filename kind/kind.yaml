@@ -3,14 +3,42 @@ apiVersion: kind.x-k8s.io/v1alpha4
 kind: Cluster
 nodes:
 - role: control-plane
+  # kueadmConfigPatches:  # 외부에서 클러스터 api에 접근할 수 있게..설정인듯
+  # - |
+  #   kind: ClusterConfiguration
+  #   apiServer:
+  #     certSANs:
+  #     - "{머신ip}"
+  extraPortMappings:
+  - containerPort: 30007    # 호스트 포트와 컨테이너 포트를 매핑. service에서 nodePort를 사용하려면 노드포트=컨테이너포트 여야 함
+    hostPort: 30007
+    listenAddress: "0.0.0.0"
+    protocol: TCP
   image: kindest/node:v1.25.16
+
 - role: control-plane
+  # extraPortMappings:  # 모든 컨트롤 플레인에 붙여줘야 하나? -> 둘 다 같은 포트로 해뒀더니 안됨. 다른 포트를 쒀줘야 하는 것 같다.
+  # - containerPort: 30007 
+  #   hostPort: 30007
+  #   listenAddress: "0.0.0.0"
+  #   protocol: TCP
   image: kindest/node:v1.25.16
-- role: control-plane
-  image: kindest/node:v1.25.16
+
+# - role: control-plane
+#   image: kindest/node:v1.25.16
+
 - role: worker
   image: kindest/node:v1.25.16
 - role: worker
   image: kindest/node:v1.25.16
 - role: worker
   image: kindest/node:v1.25.16
+
+networking:
+  # WARNING: It is _strongly_ recommended that you keep this the default
+  # (127.0.0.1) for security reasons. However it is possible to change this.
+  apiServerAddress: "127.0.0.1"
+  # By default the API server listens on a random open port.
+  # You may choose a specific port but probably don't need to in most cases.
+  # Using a random port makes it easier to spin up multiple clusters.
+  apiServerPort: 6444

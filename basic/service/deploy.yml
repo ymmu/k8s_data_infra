@@ -1,0 +1,25 @@
+## 디플로이먼트
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-deploy
+spec:
+  replicas: 3
+  selector:           # deployment - pod 대응용
+    matchLabels:
+      app: web
+  template:           # 여기서부터 파드 템플릿
+    metadata:
+      labels:
+        app: web      # 파드의 라벨
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:latest
+        resources:
+          limits:
+            cpu: "1"
+            memory: "512Mi"
+          requests:
+            cpu: "0.5"
+            memory: "256Mi"

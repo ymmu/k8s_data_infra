@@ -6,8 +6,10 @@
 ---
 ## 자주 쓰는 커멘드 정리
 ```bash
-# 디플로이먼트, pod 정보 출력
-> k get deploy,po 
+# 디플로이먼트, pod,service 정보 출력
+> k get deploy,po,service
+# 혹은 all로 
+> k get all
 
 > k get po -o wide
 
@@ -208,4 +210,15 @@ NAME          READY   STATUS      RESTARTS   AGE
 job-1-rkhcc   0/1     Completed   0          29s
  > kubectl delete job job-1  
 job.batch "job-1" deleted
+```
+   
+
+---
+
+## 클러스터에 내부에서만 팟끼리 통신 가능할 때 확인법
+
+-> busybox라는 팟을 띄워가지고 테스트해볼 수 있음 
+
+```bash
+k run -it busybox --restart=Never --rm --image=busybox sh
 ```

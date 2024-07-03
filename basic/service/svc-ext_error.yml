@@ -1,0 +1,7 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: apl-on-baremetal
+spec:
+  type: ExternalName
+  externalName: 10.132.253.7  # ip 설정을 넣으면 안 됨

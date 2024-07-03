@@ -120,5 +120,9 @@ spec:
     port: 3306
     targetPort: 3306
     nodePort: 30007  ## NodePort 서비스의 포트 범위는 30000~32767
-  selector:
-    app: mysql
+  # type: LoadBalancer  # 이것도 외부에서 포트에 붙으려면 이것만 해주면 안 되고 이것도 Kind쪽 설정을 해줘야 함
+  # ports:
+  # - protocol: TCP
+  #   port: 3306
+  # selector:
+  #   app: mysql

@@ -1,0 +1,12 @@
+## 서비스
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-service
+spec:                 # type을 생략하여 ClusterIP가 적용된다. 
+  selector:           # service - 백엔드 pod와 연결
+    app: web
+  ports:
+  - protocol: TCP
+    port: 80
+  sessionAffinity: ClientIP  # 클라이언트 IP 주소에 따라 전송될 파드가 결정됨. 특정 팟에만 고정으로 요청을 보냄

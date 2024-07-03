@@ -515,12 +515,13 @@ env:
           mysqladmin -uroot -p$MYSQL_ROOT_PASSWORD ping
 ```
 ---
-### [트러블슈팅] mysql 포트로 접속
-
-이건 해결이 반만 되었는데..
-PORT-FORWARD로 잠깐 열어서 MYSQL benchmark 에 접속해보는 건 성공.
-
-**벤치마크 설치 (ubuntu 22.04)**
+### [트러블슈팅] mysql 포트로 접속 에러 (해결방법 2가지)
+  
+**[방법1]**  
+**PORT-FORWARD로 잠깐 열어서 MYSQL benchmark 에 접속**
+  
+  
+**먼저 포트에 열결할 벤치마크 설치 (ubuntu 22.04)**
 벤치마크 설치하는 것도 일이었음;; 
 처음에 메뉴얼로 설치했다가 또 지우고..하..
 
@@ -557,3 +558,52 @@ Handling connection for 30007
 Handling connection for 30007
 
 ```
+   
+---
+  
+**[방법2]**  
+**Kind cluster control-plane에 포트포워딩 설정**
+[[참조페이지]](https://iamunnip.medium.com/kind-local-kubernetes-cluster-part-4-cf47c46c812e)
+이 역시 벤치마크와 잘 연결됨.
+  
+외부에서 노드의 포트에 접근하려면 kind 에 포트를 열어줘야 함
+컨트롤플레인이 여러개면 하나에만 달아주면 됨. 여러개에 같은 포트 설정 못 함.
+
+```bash
+- role: control-plane
+  extraPortMappings:
+  - containerPort: 30007    # 호스트 포트와 컨테이너 포트를 매핑. service에서 nodePort를 사용하려면 노드포트=컨테이너포트 여야 함
+    hostPort: 30007
+    listenAddress: "0.0.0.0"
+    protocol: TCP
+  image: kindest/node:v1.25.16
+```
+  
+그리고 Mysql 서비스에 포트 확인. 
+노드포트와 위의 kind쪽에서 열어둔 포트랑 같아야 함
+```bash
+# mysql service, 요청을 파드에게 전달
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-svc
+  labels:
+    app: mysql
+spec:
+  type: NodePort
+  ports:
+  - protocol: TCP
+    port: 3306
+    targetPort: 3306
+    nodePort: 30007  ## NodePort 서비스의 포트 범위는 30000~32767
+  selector:
+    app: mysql
+```
+
+---
+  
+**[방법3]**  
+**서비스 LoadBalance로 설정시 externalIP 부여하는 방법**
+요거는 테스트해봐야 한다. [[참조페이지]](https://medium.com/groupon-eng/loadbalancer-services-using-kubernetes-in-docker-kind-694b4207575d)
+  
+  

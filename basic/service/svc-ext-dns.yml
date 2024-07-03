@@ -1,0 +1,7 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: naver
+spec:
+  type: ExternalName
+  externalName: wwww.naver.com
