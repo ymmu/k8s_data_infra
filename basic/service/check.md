@@ -47,45 +47,45 @@ ClusterIP 기능 + 노드의 IP 주소에 공개포트가 열린다.
 -> 요청은 노드 안의 "KUBE-PROXY" 를 거쳐서 "**모든 노드의 POD**"에 부하분산되어 전송됨.   
 -> 노드1에서 받았다고 노드1 안의 POD에만 전달되는게 아님을 말하고 싶었음.  
    
--> 물론 노드1에서 받은 요청을 노드1 안의 pod에서 처리하게 설정도 가능하다고 함.
--> 근데 특정노드의 Pod에서만 처리하게 설정해두면, 단점이 이 노드가 죽으면 요청 처리를 못 하게 된다.
--> 네임스페이스로 클러스터를 분할하여 운용할 떄 이런 문제가 발생할 수 있다고 함. 
--> 그렇다면 네임스페이스로 클러스터의 특정 노드만 선택해서 사용할 수 있다는 건가..
+-> 물론 노드1에서 받은 요청을 노드1 안의 pod에서 처리하게 설정도 가능하다고 함.  
+-> 근데 특정노드의 Pod에서만 처리하게 설정해두면, 단점이 이 노드가 죽으면 요청 처리를 못 하게 된다.  
+-> 네임스페이스로 클러스터를 분할하여 운용할 떄 이런 문제가 발생할 수 있다고 함.  
+-> 그렇다면 네임스페이스로 클러스터의 특정 노드만 선택해서 사용할 수 있다는 건가..  
    
--> 무튼, 이 노트포트는 편리하긴 하지만 정식 서비스에는 사용하긴 거시기하다고 함.
+-> 무튼, 이 노트포트는 편리하긴 하지만 정식 서비스에는 사용하긴 거시기하다고 함.  
    
    
 ---
 
 ### LoadBalancer
 
-ClusterIP 기능 + NodePort 기능 모두 포함
-로드밸런서와 연동하여 파드의 애플리케이션을 외부에 공개
--> 외부에서 tcp/ip 요청이 들어오면 로드밸런서의 공인IP로 연결되어 있는 팟에 부하분산됨
--> 퍼블릭 클라우드에서는 각 업체가 제공하는 로드밸러서가 연동됨
+ClusterIP 기능 + NodePort 기능 모두 포함  
+로드밸런서와 연동하여 파드의 애플리케이션을 외부에 공개  
+-> 외부에서 tcp/ip 요청이 들어오면 로드밸런서의 공인IP로 연결되어 있는 팟에 부하분산됨  
+-> 퍼블릭 클라우드에서는 각 업체가 제공하는 로드밸러서가 연동됨  
    
   
 ---
 
 ### ExternalName
 
-팟에서 k8s 외부 엔드포인트에 접속하기 위한 기능
--> 예를 들어, 팟에서 퍼블릭클라우드의 db라던지, 인공지능 api 서비스에 접근할 떄 라던지..
--> 서비스의 이름와 외부 dns이름의 매핑을 dns에 설정한다.
--> 이 정보를 가지고 팟에서 서비스의 이름으로 외부 네트워크의 엔드포인트에 접근 가능하게 됨
--> 포트번호는 지정을 못 한다고 한다.
--> 외부 DNS 명을 등록시에 IP 주소로는 설정 불가능 하다고 함. 무조건 DNS를 생성해야 하는구나...
--> 서비스의 메니페스트에 IP 주소를 설정하려면 헤드리스 서비스를 이용하라고 함.
+팟에서 k8s 외부 엔드포인트에 접속하기 위한 기능   
+-> 예를 들어, 팟에서 퍼블릭클라우드의 db라던지, 인공지능 api 서비스에 접근할 떄 라던지..  
+-> 서비스의 이름와 외부 dns이름의 매핑을 dns에 설정한다.  
+-> 이 정보를 가지고 팟에서 서비스의 이름으로 외부 네트워크의 엔드포인트에 접근 가능하게 됨  
+-> 포트번호는 지정을 못 한다고 한다.  
+-> 외부 DNS 명을 등록시에 IP 주소로는 설정 불가능 하다고 함. 무조건 DNS를 생성해야 하는구나...  
+-> 서비스의 메니페스트에 IP 주소를 설정하려면 헤드리스 서비스를 이용하라고 함.  
    
 
 ---
 
 ### 서비스와 파드 연결
 
-보통 디플로이로 파드를 생성하고, 파드에 요청을 보낼 수 있게 서비스를 연결하는데, 서비스가 디플로이의 파드를 인지하기 위해 `레이블`을 살펴본다.
+보통 디플로이로 파드를 생성하고, 파드에 요청을 보낼 수 있게 서비스를 연결하는데, 서비스가 디플로이의 파드를 인지하기 위해 `레이블`을 살펴본다.  
    
--> 디플로이의 **metadata.label.app: `web`** 으로 되어 있을 때
--> 서비스에서 이 디플로이의 팟을 보고 싶으면 **spec.selector.app: `web`** 으로 설정해두면 된다. 
+-> 디플로이의 **metadata.label.app: `web`** 으로 되어 있을 때  
+-> 서비스에서 이 디플로이의 팟을 보고 싶으면 **spec.selector.app: `web`** 으로 설정해두면 된다.  
 
    
 
@@ -97,8 +97,8 @@ ClusterIP 기능 + NodePort 기능 모두 포함
 - deploy.yml
 - service_ci.yml
   
--> nginx 3개 레플리카 디플로이로 띄우고, 서비스 타입을 clusterIP로 두고 테스트
--> `sessionAffinity` 설정으로 특정 파드에만 요청 전달하게 설정
+-> nginx 3개 레플리카 디플로이로 띄우고, 서비스 타입을 clusterIP로 두고 테스트  
+-> `sessionAffinity` 설정으로 특정 파드에만 요청 전달하게 설정  
 
 ```bash
 > k apply -f deploy.yml     
@@ -127,8 +127,8 @@ replicaset.apps/web-deploy-ccbd58689   3         3         3       49s
 ```
   
 
-busybox를 띄운 후에 Pod에 접근 확인.
--> 오..서비스 이름(web-service)로도 nginx 접근이 가능하네..
+busybox를 띄운 후에 Pod에 접근 확인.  
+-> 오..서비스 이름(web-service)로도 nginx 접근이 가능하네..  
 ```bash
 k run -it busybox --restart=Never --rm --image=busybox sh                             ✔  kind-kindcluster ○  19:25:04 
 If you don't see a command prompt, try pressing enter.
@@ -171,15 +171,15 @@ WEB_SERVICE_SERVICE_HOST=10.96.117.66
 / # 
 ```
   
-서비스 접근시 pod에 분산접근하는 것 확인
--> pod 의 nginx index.html 에 hostname을 출력하게 변경해줌
+서비스 접근시 pod에 분산접근하는 것 확인  
+-> pod 의 nginx index.html 에 hostname을 출력하게 변경해줌  
 ```bash
 # NR>1 {print $1}: 레코드 2번째 줄부터 첫번째 컬럼값을 출력해라
 for pod in $(k get pods | awk 'NR>1 {print $1}' | grep web-deploy);
 do k exec $pod -- /bin/sh -c "hostname>/usr/share/nginx/html/index.html";
 done
 ```
-awk커멘드 뭐찍는지 잠깐 테스트해본거..
+awk커멘드 뭐찍는지 잠깐 테스트해본거..  
 [[awk커멘드 참조페이지]](https://recipes4dev.tistory.com/171)
 ```bash
 > k get pods  
@@ -194,7 +194,7 @@ web-deploy-ccbd58689-95d68
 web-deploy-ccbd58689-mdfm8
 ```
    
-busybox로 연결해보면
+busybox로 연결해보면  
 ```bash
 / # while true; do wget -q -O - http://web-service; sleep 3; done
 web-deploy-ccbd58689-5qf96
@@ -210,8 +210,8 @@ web-deploy-ccbd58689-95d68
 ```
   
 
-sessionAffinity: ClientIP 로 뒀을 때 하나의 팟만 바라보는 것 확인
--> 먼저 설정 적용하고 서비스 상태 확인
+sessionAffinity: ClientIP 로 뒀을 때 하나의 팟만 바라보는 것 확인  
+-> 먼저 설정 적용하고 서비스 상태 확인  
 ```bash
 k describe service web-service                                                        ✔  kind-kindcluster ○  20:01:11 
 Name:              web-service
@@ -231,7 +231,7 @@ Session Affinity:  ClientIP
 Events:            <none>
 ```
   
-busybox로 확인
+busybox로 확인  
 ```bash
 > k run -it busybox --restart=Never --rm --image=busybox sh   
 If you don't see a command prompt, try pressing enter.
@@ -251,15 +251,15 @@ web-deploy-ccbd58689-5qf96
 ---
 
 ## NodePort 와 LoadBalancer 테스트
-저번 디플로이 테스트시 mysql 로 외부포트 접근되는지 확인함.
-**`deployment/check.md`** 문서에 정리함.
+저번 디플로이 테스트시 mysql 로 외부포트 접근되는지 확인함.  
+**`deployment/check.md`** 문서에 정리함.  
   
 
 ---
 ## ExternalName 테스트
   
-dns 테스트
-야후재팬은 잘 터지는데 네이버는 막아놨다 함...
+dns 테스트  
+야후재팬은 잘 터지는데 네이버는 막아놨다 함...  
 ```bash
 > k run -it busybox --restart=Never --rm --image=busybox sh 
 If you don't see a command prompt, try pressing enter.
@@ -294,9 +294,9 @@ PING www.naver.com (223.130.200.219): 56 data bytes
   
 
 **ip로 접근하게 할 때는 엔드포인트 지정해줘야 함**
--> `svc-headless.yml` 파일
--> 원래 설정된거로는 안 터짐 ㅋㅋ ip 를 뭘로 넣으면 터지려나? 
-있는 파트 ip를 넣어볼까..어쨋든 ip로 엔드포인트 잡고 접속이 되나 보는거니까..
+-> `svc-headless.yml` 파일  
+-> 원래 설정된거로는 안 터짐 ㅋㅋ ip 를 뭘로 넣으면 터지려나?   
+있는 파트 ip를 넣어볼까..어쨋든 ip로 엔드포인트 잡고 접속이 되나 보는거니까..  
   
 ```bash
 kind: Endpoints
@@ -315,7 +315,7 @@ spec:
   clusterIP: None
 ```
   
-실행시켜봄..잘 됨
+실행시켜봄..잘 됨  
    
 ```bash
 > k run -it busybox --restart=Never --rm --image=busybox sh
