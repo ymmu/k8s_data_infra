@@ -1,0 +1,24 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: abnormal-end
+spec:
+  completionMode: Indexed  # required for the feature
+  # backoffLimitPerIndex: 1  # maximal number of failures per index
+  # maxFailedIndexes: 5      # maximal number of failed indexes before terminating the Job execution
+  # 위치가 이상하게 들어가 있었음;;
+  completions: 1
+  parallelism: 1
+  backoffLimit: 2
+  # ttlSecondsAfterFinished: 3 # job finished(either Complete or Failed) 후 100초 후에 삭제. 
+  template:
+    spec:
+      containers:
+      - name: busybox-1
+        image: busybox:latest
+        command: ["sh",  "-c", "sleep 5; exit 1"]
+      # 컨테이너중 하나가 비정상종료할 시, 다른 컨테이너는 정상종료되어도 job은 비정상종료로 처리됨.
+      - name: busybox-2
+        image: busybox:latest
+        command: ["sh",  "-c", "sleep 5; exit 0"]
+      restartPolicy: Never
