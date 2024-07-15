@@ -59,12 +59,12 @@ spec:
 ```
 
 ## 레플리카수 조정하기 (SCALE)
-yaml에서 replica수를 수정하는 방법도 있지만, 커멘드를 통해서도 수정 가능.
+yaml에서 replica수를 수정하는 방법도 있지만, 커멘드를 통해서도 수정 가능.  
 ```
 k scale --replicas={새로운 레플리카 갯수} {deployment이름}
 ```
 파드의 개수를 늘리는 중에 k8s 클러스터의 자원(cpu & memory)이 부족해지면 노드를 추가하여 자원이 생길 때까지 파드 생성이 보류된다. 
-파드 개수 늘리기 전에 가용 자원 확인 필요 !
+파드 개수 늘리기 전에 가용 자원 확인 필요 ! 
 
 ```bash
 > k apply -f deployment1.yml 
@@ -175,9 +175,9 @@ pod/web-deploy-8d6dc84fb-zk8r5   1/1     Running   0          8m6s
 - 노드가 정지되면 -> 그 노드에 포함한 팟이 unknown으로 변경됨 -> 정상인 노드에 새로운 Pod 생성 -> 정지된 노드를 다시 실행하면 -> unknown 팟이 (상태가 불분명했는데 상태확인이 되면서) 삭제됨
 
 ### 자동복구 테스트
-노드에 문제가 생기면 **5분 이후**에 다른 정상 노드에 파드가 생긴다.
+노드에 문제가 생기면 **5분 이후**에 다른 정상 노드에 파드가 생긴다.  
 
-1. 노드별 파드 상태 확인. web-deploy 디플로이먼트 하나만 올려둔 상태
+1. 노드별 파드 상태 확인. web-deploy 디플로이먼트 하나만 올려둔 상태  
 ```bash
 > k get po -o wide
 NAME                         READY   STATUS    RESTARTS   AGE   IP            NODE                  NOMINATED NODE   READINESS GATES
@@ -186,7 +186,7 @@ web-deploy-8d6dc84fb-lf2sx   1/1     Running   0          12h   10.244.4.13   ki
 web-deploy-8d6dc84fb-zk8r5   1/1     Running   0          12h   10.244.5.15   kindcluster-worker    <none>           <none>
 ```
 
-2. Kind 노드 worker를 중지시킴. docker 커멘드를 이용
+2. Kind 노드 worker를 중지시킴. docker 커멘드를 이용  
 ```bash
 # kind 클러스터 노드 확인
 > docker ps --filter "name=kind"
@@ -216,7 +216,7 @@ fe02fe4f6dd1   kindest/node:v1.25.16                "/usr/local/bin/entr…"   2
 0e7efcc9e6c9   kindest/haproxy:v20230606-42a2262b   "haproxy -W -db -f /…"   2 days ago   Up 2 days   127.0.0.1:43287->6443/tcp   kindcluster-external-load-balancer
 ```
 
-3. 시간별 pod 상태 확인. (pod 상태 변경이 5분 이상 걸린다.)
+3. 시간별 pod 상태 확인. (pod 상태 변경이 5분 이상 걸린다.)  
 ```bash
 >k get po -o wide             ✔  test Py  kind-kindcluster ○  11:14:44 
 NAME                         READY   STATUS    RESTARTS   AGE   IP            NODE                  NOMINATED NODE   READINESS GATES
@@ -254,7 +254,7 @@ web-deploy-8d6dc84fb-zk8r5   1/1     Terminating   0          12h   10.244.5.15 
 
 ```
 
-4. 노드 다시 재시작
+4. 노드 다시 재시작  
 
 ```bash
 docker start kindcluster-worker                         ✔  test Py  11:23:47 
@@ -284,12 +284,12 @@ fe02fe4f6dd1   kindest/node:v1.25.16                "/usr/local/bin/entr…"   2
 
 ---
 ## 액티브 스탠바이 HA(아마도 high availability?)세팅
-- 예제는 노드 정지시켜서 다른 노드에 팟 생겨서 서비스가 계속 지속되는걸 보여주려고 한 예제이지만, 디비가 5분 동안 죽어있는게 과연 적절한 거신가 ㅋㅋ
-- 그것보단 yml 파일 설정에서 로컬 세팅에서 persistant volumn 설정이 빠져있어서 이 부분 추가하면서 확인한 것들 기록
+- 예제는 노드 정지시켜서 다른 노드에 팟 생겨서 서비스가 계속 지속되는걸 보여주려고 한 예제이지만, 디비가 5분 동안 죽어있는게 과연 적절한 거신가 ㅋㅋ  
+- 그것보단 yml 파일 설정에서 로컬 세팅에서 persistant volumn 설정이 빠져있어서 이 부분 추가하면서 확인한 것들 기록  
 
 
-예제에 있는 yml로 apply 하면 Pod이 Pending상태로 유지가 됨.
-내용을 찾아보니..persistantvolume이 없어서 그런 것으로 보였다.
+예제에 있는 yml로 apply 하면 Pod이 Pending상태로 유지가 됨.  
+내용을 찾아보니..persistantvolume이 없어서 그런 것으로 보였다.  
 ```bash
 # 아..로그가..지워졌다; gpt한테 물어본 내용으로 
 The error message 
@@ -304,14 +304,14 @@ The part about "preemption: 0/6 nodes are available:
 ...
 ```
 
-gpt가 말해준 방법대로 일단 Pvc와 Pv 검색..
-근데 내가 만든 적이 없고, default값으로 생성되는 pv가 없으면...없지
+gpt가 말해준 방법대로 일단 Pvc와 Pv 검색..  
+근데 내가 만든 적이 없고, default값으로 생성되는 pv가 없으면...없지  
 ```bash
 k get pvc -n <namespace>
 k get pv
 ```
-
-GPT가 추천해준 대로 PV 관련 SPEC을 추가 &수정
+  
+GPT가 추천해준 대로 PV 관련 SPEC을 추가 &수정  
 ```YAML
 # 로컬에서 테스트시에 pv가 따로 없으면 먼저 만들어줘야 한다.
 # 얘는 그냥 yaml을 분리해서 보관해도 될 듯?? 공용으로 사용하려면...
@@ -339,7 +339,7 @@ spec:
           - your-node-name
 ```
 
-local 경로를 마운트한 경로에 추가해주려고 몇 가지 설정
+local 경로를 마운트한 경로에 추가해주려고 몇 가지 설정  
 - /dev/sda 에 파티션 (정리와)추가 -> 경로 마운트
 - 안 쓰는 파티션 그냥 삭제하고 새로 마운트
 ```
@@ -365,9 +365,9 @@ chmod 777 /data/mysql
 groups # 그룹 리스트
 getent group {그룹명} # 그룹에 속한 유저
 ```
-
-이렇게 해준 후 다시 apply 해보면 Pod이 제대로 뜬다.
-pod 로그 확인..
+  
+이렇게 해준 후 다시 apply 해보면 Pod이 제대로 뜬다.  
+pod 로그 확인..  
 
 ```bash
 > k get po -o wide
@@ -449,15 +449,15 @@ mysql-pvc   Bound    pvc-a48c71b0-4d46-4492-9cd6-c81843ff382b   1Gi        RWO  
 
 ### [트러블슈팅] mysql previlage 문제..
 
-그냥 그렇구나 하고 yaml 안 돌려봤으면 재미없었을 뻔..ㅎㅎㅎㅎ...
-트러블슈팅하면서 커멘드에도 익숙해지고 서비스/컨피그맵/시크릿도 강제 예습을 ㅋㅋㅋㅋ
+그냥 그렇구나 하고 yaml 안 돌려봤으면 재미없었을 뻔..ㅎㅎㅎㅎ...  
+트러블슈팅하면서 커멘드에도 익숙해지고 서비스/컨피그맵/시크릿도 강제 예습을 ㅋㅋㅋㅋ  
   <br/>
 위에서 제대로 뜨는 줄 알았는데; pod restart가 엄청나게 일어나서 로그를 보니,
 LivenessProve에서 alive 응답을 못 받고 있다...  
-login 이 제대로 안되서 denied가 떨어지는 상황ㅠ
+login 이 제대로 안되서 denied가 떨어지는 상황ㅠ  
   <br/>
-일단 yml의 env쪽 패스워드 변수를 모두 secret과 config로 바꿈.
-그리고 `MYSQL_ROOT_HOST` 설정도 추가..아무데서나 접속도 못하게 해둬서;
+일단 yml의 env쪽 패스워드 변수를 모두 secret과 config로 바꿈.  
+그리고 `MYSQL_ROOT_HOST` 설정도 추가..아무데서나 접속도 못하게 해둬서;  
 
 **configmap과 secret 설정**
 ```bash
@@ -497,8 +497,8 @@ env:
               key: MYSQL_ROOT_HOST 
 ```
 
-일단 이렇게 바꾸고 `exec -it` 로 ymal의 livenessProve 실행 cmd를 날렸는데..계속 패스워드를 물어봄;;
-그래서 커멘드를 바꾸니 제대로 된다..하...
+일단 이렇게 바꾸고 `exec -it` 로 ymal의 livenessProve 실행 cmd를 날렸는데..계속 패스워드를 물어봄;;  
+그래서 커멘드를 바꾸니 제대로 된다..하...  
 ```yaml 
 # 변경전
   livenessProbe:
@@ -518,12 +518,12 @@ env:
 ### [트러블슈팅] mysql 포트로 접속 에러 (해결방법 2가지)
   
 **[방법1]**  
-**PORT-FORWARD로 잠깐 열어서 MYSQL benchmark 에 접속**
+**PORT-FORWARD로 잠깐 열어서 MYSQL benchmark 에 접속**  
   
   
 **먼저 포트에 열결할 벤치마크 설치 (ubuntu 22.04)**
-벤치마크 설치하는 것도 일이었음;; 
-처음에 메뉴얼로 설치했다가 또 지우고..하..
+벤치마크 설치하는 것도 일이었음;;  
+처음에 메뉴얼로 설치했다가 또 지우고..하..  
 
 ```
 - mysql 홈페이지에 가서 config Deb 를 먼저 다운로드 받아서 dpkg
@@ -546,8 +546,8 @@ sudo snap install mysql-workbench-community
 ```
 
 **Portforward 로 접속**
-service 설정하고 -> 공유기에 설정해둔 외부 포트를 열어뒀는데..안됨;;  
-그래도 Portforward로 localhost에서 접속은 해볼 수 있었다..
+service 설정하고 -> 공유기에 설정해둔 외부 포트를 열어뒀는데..안됨;;   
+그래도 Portforward로 localhost에서 접속은 해볼 수 있었다..  
 ```bash
 > k port-forward pod/mysql-deploy-5b48f458f-gw9zb 30007:3306
 
@@ -562,12 +562,12 @@ Handling connection for 30007
 ---
   
 **[방법2]**  
-**Kind cluster control-plane에 포트포워딩 설정**
+**Kind cluster control-plane에 포트포워딩 설정**  
 [[참조페이지]](https://iamunnip.medium.com/kind-local-kubernetes-cluster-part-4-cf47c46c812e)
-이 역시 벤치마크와 잘 연결됨.
+이 역시 벤치마크와 잘 연결됨.  
   
-외부에서 노드의 포트에 접근하려면 kind 에 포트를 열어줘야 함
-컨트롤플레인이 여러개면 하나에만 달아주면 됨. 여러개에 같은 포트 설정 못 함.
+외부에서 노드의 포트에 접근하려면 kind 에 포트를 열어줘야 함  
+컨트롤플레인이 여러개면 하나에만 달아주면 됨. 여러개에 같은 포트 설정 못 함.  
 
 ```bash
 - role: control-plane
@@ -579,8 +579,8 @@ Handling connection for 30007
   image: kindest/node:v1.25.16
 ```
   
-그리고 Mysql 서비스에 포트 확인. 
-노드포트와 위의 kind쪽에서 열어둔 포트랑 같아야 함
+그리고 Mysql 서비스에 포트 확인.  
+노드포트와 위의 kind쪽에서 열어둔 포트랑 같아야 함  
 ```bash
 # mysql service, 요청을 파드에게 전달
 apiVersion: v1
@@ -605,5 +605,4 @@ spec:
 **[방법3]**  
 **서비스 LoadBalance로 설정시 externalIP 부여하는 방법**
 요거는 테스트해봐야 한다. [[참조페이지]](https://medium.com/groupon-eng/loadbalancer-services-using-kubernetes-in-docker-kind-694b4207575d)
-  
   
