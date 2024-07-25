@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod1
+spec:
+  volumes:               ##「표5 Volume v1 core」참고
+  - name: pvc1
+    persistentVolumeClaim:
+      claimName: data-storage-test   ## <-- PVC의 이름 설정
+  containers:
+  - name: ubuntu
+    image: ubuntu:16.04
+    volumeMounts:        ## 「표6 VolumeMount v1 core」참고
+    - name: pvc1
+      mountPath: /mnt    ## <-- 컨테이너 상 마운트 경로
+    command: ["/usr/bin/tail","-f","/dev/null"]      

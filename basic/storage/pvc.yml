@@ -1,0 +1,12 @@
+apiVersion: v1  ##「표１PersistentVolumeClaim v1 core」
+kind: PersistentVolumeClaim
+metadata:       ##「표2 ObjectMeta v1 meta」
+  name: data-storage-test
+spec:           ##「표3 PersistentVolumeClaimSpec v1 core」
+  accessModes:
+  - ReadWriteOnce
+  storageClassName: standard
+  resources:
+    requests:
+      storage: 1Gi
+
