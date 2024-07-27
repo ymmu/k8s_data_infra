@@ -9,9 +9,17 @@ nodes:
     listenAddress: "0.0.0.0"
     protocol: TCP
   image: kindest/node:v1.25.16
-  extraMounts:
-  - hostPath: /var/run/docker.sock
-    containerPath: /var/run/docker.sock
+  # 이 부분도 nfs 패키지 설치하는데 아무 상관 없음.
+  # extraMounts:
+  # - hostPath: /var/run/docker.sock
+  #   containerPath: /var/run/docker.sock
+  # 이 설정도 nfs 패키지 설치하는데 아무 상관 없음. 필요한 것만 넣지 헷갈리게 왜 이런걸 마음대로 넣냐고 ㅎ
+  # 역시 검토 필수..
+  # kubeadmConfigPatches는 kubeadm의 구성을 변경하는 것으로, 이를 통해 노드 레이블을 추가할 수 있음
+  # - initConfiguration: 마스터 노드가 초기화될 때 사용되는 구성 
+  # - joinConfigurationL: 워커 노드가 클러스터에 조인될 때 사용되는 구성
+  # kubeletExtraArgs: kubelet에 추가 인자를 전달 
+  # - 여기서는 node-labels를 사용하여 노드에 node.kubernetes.io/nfs-client=true 레이블을 추가
   kubeadmConfigPatches:
   - |
     kind: InitConfiguration

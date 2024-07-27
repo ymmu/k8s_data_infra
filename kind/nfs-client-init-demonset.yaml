@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: nfs-client-init
+  namespace: kube-system
+spec:
+  selector:
+    matchLabels:
+      name: nfs-client-init
+  template:
+    metadata:
+      labels:
+        name: nfs-client-init
+    spec:
+      initContainers:
+      - name: install-nfs-client
+        image: ubuntu:20.04
+        # securityContext:
+        #   privileged: true
+        command: ["/bin/bash", "-c"]
+        args:
+        - apt-get update && apt-get install -y nfs-common
+        # volumeMounts:
+        # - name: host-root
+        #   mountPath: /host
+      containers:
+      - name: pause
+        image: gcr.io/google_containers/pause:3.1
+      # volumes:
+      # - name: host-root
+      #   hostPath:
+      #     path: /
+      hostNetwork: true
+      hostPID: true
+      tolerations:
+      - key: node.kubernetes.io/not-ready
+        operator: Exists
+        effect: NoExecute
+      - key: node.kubernetes.io/unreachable
+        operator: Exists
+        effect: NoExecute

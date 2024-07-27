@@ -156,3 +156,53 @@ tmpfs            64M     0   64M   0% /dev
 /dev/nvme0n1p8  413G  101G  291G  26% /mnt
 ...
 ```
+  
+
+### nfs 서버 사용
+책에서는 Minikube를 이용해서 세팅을 했는데, 나는 kind를 사용해서 있는 내용을 그대로 쓰지 않았다.  
+kind는 도커를 이용해서 쿠버네티스 클러스터를 구축하는 것이어서 다른 방법이 필요하다..  
+gpt를 통해서 작성하고, 모르는 부분과 이상한 부분들은 의미를 물어보고, 수정을 요청함
+  
+  
+#### 스텝
+yaml에서 궁금한 내용은 파일에 주석처리해둠
+각 pv,pvc,daemonset 등 확인
+```bash
+k get daemonset -n kube-system {데몬셋이름}
+k get pv,pvc
+k describe pvc {pvc 이름}
+```
+  
+  
+1. **로컬 환경에 필요한 패키지를 설치한다.**
+  
+```bash
+# NFS 서버 설치 (Ubuntu 예시)
+sudo apt update
+sudo apt install nfs-kernel-server
+
+# NFS 공유 디렉토리 생성
+sudo mkdir -p /srv/nfs/k8s
+sudo chown nobody:nogroup /srv/nfs/k8s
+
+# /etc/exports 파일 수정
+echo "/srv/nfs/k8s *(rw,sync,no_subtree_check,no_root_squash)" | sudo tee -a /etc/exports
+
+# NFS 서버 재시작
+sudo exportfs -rav
+sudo systemctl restart nfs-kernel-server
+
+# NFS 서버 방화벽
+sudo ufw allow from {} to any port nfs
+sudo ufw reload
+```
+2. **Kind 노드에 필요한 패키지를 설치한다.**
+    - Kind 클러스터 세팅 yaml 에는 이 작업에 관련하여 바뀌는건 없음
+    - 데몬셋 yaml을 사용해서 각 노드에 필요한 패키지 설치 (nfs-common)
+    - 데몬셋은 실행되고 작업을 끝마쳐도 job 오브젝트처럼 종료되지 않고 계속 살아있음
+3. **(Pv, pvc, 디플로이먼트 Pod) yaml 작성**
+    - pv 서버는 로컬머신 내부 아이피 사용. 아이피 변경 다이나믹하게 해두지 않음. 지금상태에선 관리포인트만 늘어나서..
+4. **파일 생성해보고 두 개의 Pod에서 공유파일 확인**
+    - 디플로이먼트로 생성한 Pod 하나에 접속해서 nfs 폴더 안에 파일 생성
+    - md5sum 으로 파일 해쉬 확인
+    - 다른 Pod에 들어가서 해당 파일의 해쉬 확인 -> 위의 해쉬와 같은지 확인

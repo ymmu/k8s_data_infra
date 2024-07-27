@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nfs-pvc
+spec:
+  accessModes:
+    - ReadWriteMany
+
+  resources:
+    requests:
+      storage: 1Gi
+  # 이런 에러가 나서 막음.
+  #  Warning  ProvisioningFailed    92s (x4 over 3m17s)     rancher.io/local-path_local-path-provisioner-6448ffcc45-jsgt6_4a17b1b9-0820-4417-afd7-232a87fea119  failed to provision volume with StorageClass "standard": claim.Spec.Selector is not supported
+  # selector: 
+  #   matchLabels:
+  #     name: nfs-pv
+  # 대안1 -> 안됨.. 스토리지 클래스를 세팅해줘야 하나봄
+  # Normal  FailedBinding  4s (x3 over 34s)  persistentvolume-controller  no persistent volumes available for this claim and no storage class is set
+  storageClassName: ""
+  # 대안2
+  volumeName: nfs-pv  
