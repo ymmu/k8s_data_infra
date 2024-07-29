@@ -8,7 +8,7 @@ nodes:
     hostPort: 30007
     listenAddress: "0.0.0.0"
     protocol: TCP
-  image: kindest/node:v1.25.16
+  image: kindest/node:v1.30.2
   # 이 부분도 nfs 패키지 설치하는데 아무 상관 없음.
   # extraMounts:
   # - hostPath: /var/run/docker.sock
@@ -33,7 +33,7 @@ nodes:
         node-labels: "node.kubernetes.io/nfs-client=true"
 
 - role: worker
-  image: kindest/node:v1.25.16
+  image: kindest/node:v1.30.2
   extraMounts:
   - hostPath: /var/run/docker.sock
     containerPath: /var/run/docker.sock
@@ -44,7 +44,7 @@ nodes:
       kubeletExtraArgs:
         node-labels: "node.kubernetes.io/nfs-client=true"
 - role: worker
-  image: kindest/node:v1.25.16
+  image: kindest/node:v1.30.2
   extraMounts:
   - hostPath: /var/run/docker.sock
     containerPath: /var/run/docker.sock
@@ -55,7 +55,7 @@ nodes:
       kubeletExtraArgs:
         node-labels: "node.kubernetes.io/nfs-client=true"
 - role: worker
-  image: kindest/node:v1.25.16
+  image: kindest/node:v1.30.2
   extraMounts:
   - hostPath: /var/run/docker.sock
     containerPath: /var/run/docker.sock
