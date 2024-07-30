@@ -166,7 +166,7 @@ listeners:
   ## @param listeners.client.sslClientAuth Optional. If SASL_SSL is enabled, configure mTLS TLS authentication type. If SSL protocol is enabled, overrides tls.authType for this listener. Allowed values are 'none', 'requested' and 'required'
   client:
     containerPort: 9092
-    protocol: SASL_PLAINTEXT
+    protocol: PLAINTEXT #SASL_PLAINTEXT # SASL쪽에 이슈있다고 함
     name: CLIENT
     sslClientAuth: ""
   ## @param listeners.controller.name Name for the Kafka controller listener
@@ -370,7 +370,7 @@ tls:
   ## @param tls.sslClientAuth Sets the default value for the ssl.client.auth Kafka setting.
   ## ref: https://docs.confluent.io/current/kafka/authentication_ssl.html#optional-settings
   ##
-  sslClientAuth: "required"
+  sslClientAuth: "" #"required"
   ## Zookeeper TLS connection configuration for Kafka
   ##
   zookeeper:

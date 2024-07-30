@@ -2,7 +2,7 @@
 #  - name: my-repository-secret
 image:
   repository: myohyun/akhq #tchiotludo/akhq
-  tag: "0.6" # uses Chart.AppVersion by default
+  tag: "0.8" # uses Chart.AppVersion by default
 # Number of old deployment ReplicaSets to retain. The rest will be garbage collected.
 revisionHistoryLimit: 10
 # custom annotations (example: for prometheus)
