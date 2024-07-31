@@ -185,7 +185,7 @@ listeners:
   ## @param listeners.interbroker.sslClientAuth Optional. If SASL_SSL is enabled, configure mTLS TLS authentication type. If SSL protocol is enabled, overrides tls.authType for this listener. Allowed values are 'none', 'requested' and 'required'
   interbroker:
     containerPort: 9094
-    protocol: SASL_PLAINTEXT
+    protocol: PLAINTEXT #SASL_PLAINTEXT
     name: INTERNAL
     sslClientAuth: ""
   ## @param listeners.external.containerPort Port for the Kafka external listener
@@ -194,7 +194,7 @@ listeners:
   ## @param listeners.external.sslClientAuth Optional. If SASL_SSL is enabled, configure mTLS TLS authentication type. If SSL protocol is enabled, overrides tls.sslClientAuth for this listener. Allowed values are 'none', 'requested' and 'required'
   external:
     containerPort: 9095
-    protocol: SASL_PLAINTEXT
+    protocol: PLAINTEXT #SASL_PLAINTEXT
     name: EXTERNAL
     sslClientAuth: ""
   ## @param listeners.extraListeners Array of listener objects to be appended to already existing listeners
@@ -678,7 +678,7 @@ controller:
       drop: ["ALL"]
   ## @param controller.automountServiceAccountToken Mount Service Account token in pod
   ##
-  automountServiceAccountToken: false
+  automountServiceAccountToken: true #false
   ## @param controller.hostAliases Kafka pods host aliases
   ## https://kubernetes.io/docs/concepts/services-networking/add-entries-to-pod-etc-hosts-with-host-aliases/
   ##
@@ -1492,7 +1492,7 @@ service:
 externalAccess:
   ## @param externalAccess.enabled Enable Kubernetes external cluster access to Kafka brokers
   ##
-  enabled: false
+  enabled: true #false
   ## External IPs auto-discovery configuration
   ## An init container is used to auto-detect LB IPs or node ports by querying the K8s API
   ## Note: RBAC might be required
@@ -1500,7 +1500,7 @@ externalAccess:
   autoDiscovery:
     ## @param externalAccess.autoDiscovery.enabled Enable using an init container to auto-detect external IPs/ports by querying the K8s API
     ##
-    enabled: false
+    enabled: true #false
     ## Bitnami Kubectl image
     ## ref: https://hub.docker.com/r/bitnami/kubectl/tags/
     ## @param externalAccess.autoDiscovery.image.registry [default: REGISTRY_NAME] Init container auto-discovery image registry
@@ -1585,7 +1585,7 @@ externalAccess:
     service:
       ## @param externalAccess.controller.service.type Kubernetes Service type for external access. It can be NodePort, LoadBalancer or ClusterIP
       ##
-      type: LoadBalancer
+      type: NodePort #LoadBalancer
       ## @param externalAccess.controller.service.ports.external Kafka port used for external access when service type is LoadBalancer
       ##
       ports:
@@ -1671,7 +1671,7 @@ externalAccess:
     service:
       ## @param externalAccess.broker.service.type Kubernetes Service type for external access. It can be NodePort, LoadBalancer or ClusterIP
       ##
-      type: LoadBalancer
+      type: NodePort #LoadBalancer
       ## @param externalAccess.broker.service.ports.external Kafka port used for external access when service type is LoadBalancer
       ##
       ports:
@@ -1877,7 +1877,7 @@ serviceAccount:
   ## @param serviceAccount.automountServiceAccountToken Allows auto mount of ServiceAccountToken on the serviceAccount created
   ## Can be set to false if pods using this serviceAccount do not need to use K8s API
   ##
-  automountServiceAccountToken: false
+  automountServiceAccountToken: true #false
   ## @param serviceAccount.annotations Additional custom annotations for the ServiceAccount
   ##
   annotations: {}
@@ -1889,7 +1889,7 @@ rbac:
   ## binding Kafka ServiceAccount to a role
   ## that allows Kafka pods querying the K8s API
   ##
-  create: false
+  create: true #false
 ## @section Metrics parameters
 ##
 
