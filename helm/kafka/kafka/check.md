@@ -11,7 +11,9 @@ operator 사용을 지향하는 분위기여서 오퍼레이터를 쓰려고 했
 ## 정리
 
 ### 1. 기본 CONFIG
-
+1. **주키퍼모드와 kraft 모드 차이**
+    - 아무래도 주키퍼에 의존성이 걸리면서 생기는 성능, 관리포인트 이슈가 가장 문제였던 것 같고, 이런 이슈들을 제거하기 위해 kraft 를 개발하게 된 것 같다. 
+    - [[참조1]](https://brunch.co.kr/@peter5236/19)
 ### 2. 보안
 카프카의 보안사항은 3가지로 볼 수 있다.
 1. 암호화 (encryption)
@@ -27,6 +29,7 @@ operator 사용을 지향하는 분위기여서 오퍼레이터를 쓰려고 했
 - [참조깃이슈 - client 테스트시 에러](https://github.com/bitnami/charts/issues/18659)
 - [참조깃이슈 - controller간 통신 문제 1](https://github.com/bitnami/charts/issues/18793)
 - [참조깃이슈 - controller간 통신 문제 2](https://github.com/bitnami/containers/issues/41415#issuecomment-1727256011)
+- [bitnami kafka values.yaml](https://github.com/bitnami/charts/blob/main/bitnami/kafka/values.yaml)
   
 ```text
 # [참조깃이슈 - controller간 통신 문제 2] 마지막 코멘트.. 해결되지 않음
@@ -59,6 +62,9 @@ CA 인증서/키 생성
   
   
 ### 3. akhq 의 application.yml 적용
+- **참조**
+    - [akhq docs](https://akhq.io/docs/configuration/authentifications/jwt.html)
+    - [akhq application.yaml 샘플](https://github.com/tchiotludo/akhq/blob/dev/application-dev.yml)
 - **[실패] application.yml을 작성해서 적용할 수 있는데, 파일로 적용**
     - configmap을 생성한 다음에 akhq 헬름차트에 initcontainer와 볼륨마운트로 파일을 전달하려했으나 Initcontainer에서 계속 에러가 나는 바람에 취소.
     - 초기화컨테이너에 `command: ['sh', '-c', 'cp /config/application.yml /app/application.yml']` 이런 부분이 들어가는데 아마..저 /app 폴더가 있기 전이라 그랬을까;; `k logs/describe..`로 로그를 확인할 수 없어서 정확한 실마리를 못 잡고 이 방법은 접었다.
