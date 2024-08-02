@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+spec:
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+        - image: nginx
+          name:  nginx
+          ports:
+            - containerPort: 80
+  selector:
+    matchLabels:
+      app: nginx
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-svc
+spec:
+  selector:
+    app: nginx
+  ports:
+     -  port: 9080  # 클라이언트가 서비스에 접근할 때 사용할 포트 (외부포트)
+        targetPort: 80  # 트래픽이 서비스에서 내부 파드로 전달될 때 사용할 포트 (내부포트)
+

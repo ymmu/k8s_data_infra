@@ -1,0 +1,59 @@
+# service
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql
+  labels:
+    app: mysql-sts
+spec:
+  ports:
+  - port: 3306
+    name: mysql
+  clusterIP: None
+  selector:
+    app: mysql-sts
+
+---
+
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mysql
+spec:
+  serviceName: mysql
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql-sts
+  template:
+    metadata:
+      labels:
+        app: mysql-sts
+    spec:
+      containers:
+      - name: mysql
+        image: mysql:5.7
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: qwerty
+        ports:
+        - containerPort: 3306
+          name: mysql
+        volumeMounts:
+        - name: pvc
+          mountPath: /var/lib/mysql
+          subPath: data # 이게 뭐지? 전체 볼륨중에 data 디렉토리만 마운트하는 것인가?
+        livenessProbe:
+          exec:
+            command: ["mysqladmin","-p$MYSQL_ROOT_PASSWORD","ping"]
+          initialDelaySeconds: 60
+          timeoutSeconds: 10
+  volumeClaimTemplates:
+  - metadata:
+      name: pvc
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: standard
+      resources:
+        requests:
+          storage: 2Gi

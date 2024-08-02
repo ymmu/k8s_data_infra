@@ -126,6 +126,8 @@ operator 사용을 지향하는 분위기여서 오퍼레이터를 쓰려고 했
 - bitnami에서 설명해둔 대로 values.yml을 세팅했는데..kafka 브로커가 계속 크러쉬백오프가..후.. 그래서 nodeport로 적용하고 Port-forward 해서 사용중.
 - 로드밸런서로 설정했을시 부분 왜 안 되는지 확인 필요하다..bitnami 여기 은근 잘못된 게 꽤 있는 것 같다.. 그리고 이슈 해결도 그닥 빠르지 않은 것 같다.
   
+### 5. ingress 설정
+- 위에서 port-forward가 너무 번거로웠는데 ingress를 공부하면서 akhq, schema-registry 모두 ingress 설정을 true로 해두고 clusterIP에 dns를 연결해두었다(/etc/hosts).
   
 ### 5. ExtraVolumes, VolumeMounts, ExtraVolumeMounts
 - VolumneMount: 리소스 마운트
