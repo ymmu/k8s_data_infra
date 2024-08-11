@@ -1,0 +1,46 @@
+apiVersion: networking.k8s.io/v1 # 예제에서 수정
+kind: Ingress
+metadata:
+  name: hello-ingres
+  annotations:
+    # kubernetes.io/ingress.class: 'nginx'  # Warning: annotation "kubernetes.io/ingress.class" is deprecated, please use 'spec.ingressClassName' instead
+    ingressClassName: 'nginx'  # 예제에서 수정
+    # 사용자가 http://abc.sample.com/apl2에 요청을 보내면, NGINX Ingress 컨트롤러는 요청 경로를 /로 재작성하고, 이를 nginx-svc로 전달합니다.
+    # 결과적으로, 백엔드 서비스 nginx-svc는 /app1이 아닌 / 경로를 처리하게 됩니다.
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/force-ssl-redirect: 'true'
+
+spec:
+  tls:
+  - hosts:
+    - abc.sample.com
+    secretName: tls-certificate
+    
+  rules:
+  - host: abc.sample.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix  # 예제에서 추가
+        backend:
+          service: 
+            name: helloworld-svc
+            port: 
+              number: 8080
+      - path: /apl2
+        pathType: Prefix  # 예제에서 수정
+        backend:
+          service:
+            name: nginx-svc
+            port:
+              number: 9080
+  - host: xyz.sample.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix  # 예제에서 수정
+        backend:
+          service:
+            name: java-svc
+            port:
+              number: 9080
