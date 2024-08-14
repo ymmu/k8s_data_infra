@@ -84,3 +84,30 @@ kubdctl delete cluster -- name kindcluster
 kubdctl config view
 ``` 
 
+# 트러블슈팅
+
+## kind 클러스터 삭제 -> 재생성시 port aleady in use 문제
+- 이전에 해둔 바인딩이 남아있어서 -> 관련 pid 찾아 삭제하고, kubelet 재시작
+   
+```
+# ex.
+docker: Error response from daemon: Ports are not available:
+ exposing port TCP 0.0.0.0:443 -> 0.0.0.0:0: 
+ listen tcp 0.0.0.0:443: bind: address already in use.
+```
+  
+포트 사용 프로세스 검색
+```
+# ex
+sudo lsof -i :6444
+
+#COMMAND       PID USER   FD   TYPE    DEVICE SIZE/OFF NODE NAME
+#docker-pr 2500852 root    4u  IPv4 303948257      0t0  TCP localhost:sge-qmaster (LISTEN)
+
+sudo kill 2500852
+```
+  
+kublete 재시작
+```
+sudo service kubelet restart 
+```

@@ -202,4 +202,16 @@ curl -Lkb cookie.dat https://abc.sample.com
 
 
 ## kube-keepalive-vip(virtual ip) 에 의한 virtual ip 획득과 고가용성(HA) 구성
--   
+- keepalive 가 하나의 노드에 virtual ip 를 할당. 이 노드가 요청을 받아서 ingress 컨트롤러에 전달
+- **멀티 노드 클러스터에서 한 노드가 죽으면 다른 노드가 대체할 수 있도록 클러스터 앞에 로드밸런스를 두는 것이 더 낫지 않나?** 책에서는 이게 더 복잡하다는 뉘앙스로 적혀있는데.. 좀 이해가 안 되는 게 Metallb 등을 통해서 로드밸런서를 설치하면 엔드포인트가 생겨서 이쪽으로 접근하는게 더 쉽지 않나 싶고..
+- 퍼블릭 클라우드에는 인그레스와 vip를 연결하는 기능이 있어서 그대로 사용하면 됨
+    
+- **service와 ingress의 차이**
+    - **Service**는 클러스터 내부에서 Pod의 네트워크 트래픽을 관리하는 기본적인 네트워크 오브젝트
+    - **Ingress**는 Service 위에서 동작하며, 클러스터 외부에서 들어오는 HTTP/HTTPS 트래픽을 클러스터 내부의 Service로 라우팅하는 고급 기능을 제공
+- kind 클러스터를 사용해서 책 예제를 그대로 사용 못 하고 여러가지 설정을 해줘야 함
+    - 요청 -> (keepalive가 노드에 ip 부여) -> nginx-ingress-svc -> ingress-controller -> service api - pod
+    - nginx-ingress-svc에 metallb로 externalIP를 부여하는데 부여한 ip로 curl을 날렸을 때 응답실패가 나서 문제..
+    - 그래서 간단한 서비스를 deploy/service로 띄우고, 해당 서비스에 externalip를 만들어서 curl을 날려봤는데도 잘 안 됨..왜일까..ㅠ
+    - 이틀동안 삽질한듯..
+    

@@ -222,3 +222,33 @@ job.batch "job-1" deleted
 ```bash
 k run -it busybox --restart=Never --rm --image=busybox sh
 ```
+  
+## pod 실행이 제대로 안 될 때
+### pod unexpected error creating file watcher: too many open files
+- 참조: https://github.com/kubeflow/manifests/issues/2087  
+- KIND 클러스터를 사용할 때 나타나는 에러로 보임.
+- fs.inotify는 리눅스 커널에서 제공하는 inotify 기능과 관련된 커널 파라미터들을 관리하기 위한 네임스페이스.
+   - inotify는 파일 시스템 이벤트를 모니터링하는 기능. 특정 파일이나 디렉토리에서 발생하는 변경 사항(생성,삭제,수정 등) 을 감지하고 알림을 받을 수 있도록 도와줌.
+   - 파일 시스템의 변화에 실시간으롣 대응해야 하는 애플리케이션에서 사용됨
+
+```bash
+sudo sysctl -a | grep fs.inotify 
+
+# inotify 인스턴스에서 큐에 넣을 수 있는 최대 이벤트 수를 설정
+# 이 값을 추과하면 새로운 이벤트가 큐에 들어오지 못 하고 손실됨
+fs.inotify.max_queued_events = 16384
+
+# 한 사용자(uid)가 생성할 수 있는 inotify 인스턴스의 최대 수
+fs.inotify.max_user_instances = 1280
+
+# 한 사용자(UID)가 생성할 수 있는 inotify watch의 최대 수
+# 각 인스턴스에서 모니터링할 수 있는 파일이나 디렉토리의 최대 개수
+# 예를 들어, 파일 시스템의 많은 파일을 모니터링하는 프로그램(예: 텍스트 에디터, 파일 인덱서 등)은 이 값을 높게 설정해야 할 수 있음
+fs.inotify.max_user_watches = 655360
+```
+
+fs.inotify 값 업데이트
+```bash
+sudo sysctl fs.inotify.max_user_instances=1280
+sudo sysctl fs.inotify.max_user_watches=655360
+```
