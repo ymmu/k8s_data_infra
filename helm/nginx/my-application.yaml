@@ -13,8 +13,8 @@ spec:
   source:
     helm:  # 애플리케이션 설치 형태를 헬름, 매니페스트 등을 지원
       valueFiles:
-      - values-apply.yaml
-    path: nginx
+      - ../values-apply.yaml
+    path: helm/nginx/nginx
     repoURL: https://github.com/ymmu/k8s_data_infra.git
     targetRevision: HEAD
   syncPolicy:
