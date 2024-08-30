@@ -4,3 +4,10 @@ spec:
   source:
     repoURL: https://github.com/ymmu/k8s_data_infra
     targetRevision: HEAD
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - Validate=false
+    - CreateNamespace=true
