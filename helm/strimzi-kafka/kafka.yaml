@@ -6,7 +6,7 @@ metadata:
   namespace: kafka
 spec:
   kafka:
-    version: 3.2.0
+    version: 3.7.0
     ## 카프카 broker 3개 설정
     replicas: 3
     listeners:
