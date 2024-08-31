@@ -1456,7 +1456,7 @@ webserver:
     ports:
       - name: airflow-ui
         port: 8080
-        targetPort: 8090
+        targetPort: 8090 
         nodePort: 31151
     loadBalancerIP: ~
     ## Limit load balancer source ips to list of CIDRs
@@ -2370,7 +2370,7 @@ elasticsearch:
 # All ports used by chart
 ports:
   flowerUI: 5555
-  airflowUI: 8080
+  airflowUI: 8090
   workerLogs: 8793
   triggererLogs: 8794
   redisDB: 6379
