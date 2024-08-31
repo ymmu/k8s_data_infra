@@ -144,7 +144,7 @@ ingress:
   # Configs for the Ingress of the web Service
   web:
     # Enable web ingress resource
-    enabled: true #false
+    enabled: false
 
     # Annotations for the web Ingress
     annotations: {}
@@ -1435,17 +1435,17 @@ webserver:
   webserverConfigConfigMapName: ~
 
   service:
-    type: NodePort #ClusterIP
+    type: ClusterIP
     ## service annotations
     annotations: {}
     # ports:
     #   - name: airflow-ui
     #     port: "{{ .Values.ports.airflowUI }}"
     # To change the port used to access the webserver:
-    ports:
-      - name: airflow-ui
-        port: 8090
-        targetPort: airflow-ui
+    # ports:
+    #   - name: airflow-ui
+    #     port: 80
+    #     targetPort: airflow-ui
     # To only expose a sidecar, not the webserver directly:
     # ports:
     #   - name: only_sidecar
