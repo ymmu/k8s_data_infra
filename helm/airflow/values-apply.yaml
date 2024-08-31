@@ -144,7 +144,7 @@ ingress:
   # Configs for the Ingress of the web Service
   web:
     # Enable web ingress resource
-    enabled: false
+    enabled: true #false
 
     # Annotations for the web Ingress
     annotations: {}
