@@ -39,11 +39,104 @@ extraEnv: []
 
 ## Or you can also use configmap for the configuration...
 configuration:
+  micronaut:
+    security:
+      enabled: true
+      token:
+        jwt:
+          signatures:
+            secret:
+              generator:
+                # WARN  default-nioEventLoopGroup-1-7 i.m.s.t.j.g.JwtTokenGenerator JOSEException while generating token The secret length must be at least 256 bits 
+                secret: 8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918
   akhq:
     server:
-      access-log:
-        enabled: false
-        name: org.akhq.log.access
+      access-log: # Access log configuration (optional)
+        enabled: true # true by default
+        name: org.akhq.log.access # Logger name
+        format: "[Date: {}] [Duration: {} ms] [Url: {} {}] [Status: {}] [Ip: {}] [User: {}]" # Logger format
+    connections:
+      kafka-cluster:
+        properties:
+          bootstrap.servers: "my-cluster-kafka-bootstrap.kafka.svc:9092"
+          security.protocol: PLAINTEXT # SASL_PLAINTEXT
+          # sasl.mechanism: SCRAM-SHA-256
+          # sasl.jaas.config: >
+          #   org.apache.kafka.common.security.scram.ScramLoginModule required 
+          #   username="user1" 
+          #   password="";
+        schema-registry:
+          url: "http://schema-registry.local"
+    security:
+      roles:
+        node-read:
+          - resources: [ "NODE" ]
+            actions: [ "READ", "READ_CONFIG" ]
+        node-admin:
+          - resources: [ "NODE" ]
+            actions: [ "READ", "READ_CONFIG", "ALTER_CONFIG" ]
+        topic-read:
+          - resources: [ "TOPIC", "TOPIC_DATA" ]
+            actions: [ "READ" ]
+          - resources: [ "TOPIC" ]
+            actions: [ "READ_CONFIG" ]
+        topic-admin:
+          - resources: [ "TOPIC", "TOPIC_DATA" ]
+            actions: [ "READ", "CREATE", "DELETE" ]
+          - resources: [ "TOPIC" ]
+            actions: [ "UPDATE", "READ_CONFIG", "ALTER_CONFIG" ]
+        connect-rw:
+          - resources: [ "CONNECTOR" ]
+            actions: [ "READ", "CREATE", "UPDATE_STATE" ]
+        connect-admin:
+          - resources: [ "CONNECTOR" ]
+            actions: [ "READ", "CREATE", "UPDATE_STATE", "DELETE" ]
+        registry-read:
+          - resources: [ "SCHEMA" ]
+            actions: [ "READ" ]
+        registry-admin:
+          - resources: [ "SCHEMA" ]
+            actions: [ "READ", "CREATE", "UPDATE", "DELETE", "DELETE_VERSION" ]
+        group-read:
+          - resources: [ "CONSUMER_GROUP" ]
+            actions: [ "READ" ]
+        connect-cluster-read:
+          - resources: [ "CONNECT_CLUSTER" ]
+            actions: [ "READ" ]
+        ksqldb-admin:
+          - resources: [ "KSQLDB" ]
+            actions: [ "READ", "EXECUTE" ]
+
+      default-group: admin
+      groups:
+        admin:
+          roles:
+            - topic/read
+            - topic/insert
+            - topic/delete
+            - topic/config/update
+            - node/read
+            - node/config/update
+            - connect/read
+            - connect/update
+            - schema/delete
+            - topic/data/insert
+            - topic/data/delete
+          attributes:
+            - name: username
+              value: admin
+        reader:
+          roles:
+            - topic/read
+            - node/read
+            - connect/read
+            - schema/read
+      # Basic auth configuration
+      basic-auth:
+        - username: admin # Username
+          password: 8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918 # Password in sha256
+          groups: # Groups for the user
+            - admin
 
 ##... and secret for connection information
 existingSecrets: ""
@@ -134,7 +227,7 @@ service:
     # cloud.google.com/load-balancer-type: "Internal"
 
 ingress:
-  enabled: false
+  enabled: true
   ingressClassName: ""
   annotations: {}
     # kubernetes.io/ingress.class: nginx
