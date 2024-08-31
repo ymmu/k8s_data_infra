@@ -160,7 +160,7 @@ ingress:
 
     # The hostnames or hosts configuration for the web Ingress
     hosts: []
-    #   # The hostname for the web Ingress (can be templated)
+      # The hostname for the web Ingress (can be templated)
     # - name: ""
     #   # configs for web Ingress TLS
     #   tls:
@@ -1437,9 +1437,9 @@ webserver:
     type: NodePort #ClusterIP
     ## service annotations
     annotations: {}
-    ports:
-      - name: airflow-ui
-        port: "{{ .Values.ports.airflowUI }}"
+    # ports:
+    #   - name: airflow-ui
+    #     port: "{{ .Values.ports.airflowUI }}"
     # To change the port used to access the webserver:
     # ports:
     #   - name: airflow-ui
@@ -1452,11 +1452,11 @@ webserver:
     #     targetPort: 8888
     # If you have a public IP, set NodePort to set an external port.
     # Service type must be 'NodePort':
-    # ports:
-    #   - name: airflow-ui
-    #     port: 8090
-    #     targetPort: 8090
-    #     nodePort: 31151
+    ports:
+      - name: airflow-ui
+        port: 8090
+        targetPort: 8090
+        nodePort: 31151
     loadBalancerIP: ~
     ## Limit load balancer source ips to list of CIDRs
     # loadBalancerSourceRanges:
@@ -2596,7 +2596,7 @@ dags:
     ## optional subpath for dag volume mount
     subPath: ~
   gitSync:
-    enabled: true #false
+    enabled: false
 
     # git repo clone url
     # ssh example: git@github.com:apache/airflow.git
