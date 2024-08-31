@@ -1455,7 +1455,7 @@ webserver:
     # Service type must be 'NodePort':
     ports:
       - name: airflow-ui
-        port: 8090
+        port: 8080
         targetPort: 8090
         nodePort: 31151
     loadBalancerIP: ~
