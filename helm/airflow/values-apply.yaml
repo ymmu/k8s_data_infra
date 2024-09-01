@@ -2724,6 +2724,6 @@ logs:
     # Annotations for the logs PVC
     annotations: {}
     # If using a custom storageClass, pass name here
-    storageClassName: standard
+    storageClassName: 
     ## the name of an existing PVC to use
     existingClaim:
