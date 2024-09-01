@@ -282,7 +282,6 @@ volumes: []
 
 # VolumeMounts for all airflow containers
 volumeMounts: []
-  # - git-sync-ssh-key
 
 # Secrets for all airflow containers
 secret: []
@@ -1072,7 +1071,7 @@ createUserJob:
   # In case you need to disable the helm hooks that create the jobs after install.
   # Disable this if you are using ArgoCD for example
   # useHelmHooks: false #true
-  applyCustomEnv: true
+  # applyCustomEnv: true
 
   env: []
 
@@ -2718,7 +2717,7 @@ logs:
 
   persistence:
     # Enable persistent volume for storing logs
-    enabled: true #false
+    enabled: false
     # Volume size for logs
     size: 1Gi
     # Annotations for the logs PVC
