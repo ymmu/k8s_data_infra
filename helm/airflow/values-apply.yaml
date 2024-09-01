@@ -916,7 +916,10 @@ scheduler:
   #     - name: my-templated-extra-volume
   #       mountPath: "{{ .Values.my_custom_path }}"
   #       readOnly: true
-  extraVolumes: []
+  extraVolumes: #[]
+    - name: git-sync-ssh-key
+      secret:
+        secretName: airflow-ssh-secret
   extraVolumeMounts: []
 
   # Select certain nodes for airflow scheduler pods.
