@@ -2585,7 +2585,7 @@ dags:
     # Annotations for dags PVC
     annotations: {}
     # Enable persistent volume for storing dags
-    enabled: false
+    enabled: true #false
     # Volume size for dags
     size: 1Gi
     # If using a custom storageClass, pass name here
@@ -2717,9 +2717,9 @@ logs:
 
   persistence:
     # Enable persistent volume for storing logs
-    enabled: false
+    enabled: true #false
     # Volume size for logs
-    size: 100Gi
+    size: 10Gi
     # Annotations for the logs PVC
     annotations: {}
     # If using a custom storageClass, pass name here
