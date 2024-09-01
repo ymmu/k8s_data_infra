@@ -1106,8 +1106,8 @@ migrateDatabaseJob:
   # Annotations on the database migration pod
   annotations: {}
   # jobAnnotations are annotations on the database migration job
-  jobAnnotations: #{}
-    "argocd.argoproj.io/hook": Sync
+  jobAnnotations: {}
+    # "argocd.argoproj.io/hook": Sync
 
   # Labels specific to migrate database job objects and pods
   labels: {}
