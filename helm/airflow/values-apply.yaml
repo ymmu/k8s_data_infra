@@ -1087,7 +1087,7 @@ createUserJob:
 migrateDatabaseJob:
   useHelmHooks: false
   applyCustomEnv: false
-  enabled: false #true
+  enabled: true
   # Limit the lifetime of the job object after it finished execution.
   ttlSecondsAfterFinished: 300
   # Command to use when running the migrate database job (templated).
@@ -1176,8 +1176,8 @@ migrateDatabaseJob:
   priorityClassName: ~
   # In case you need to disable the helm hooks that create the jobs after install.
   # Disable this if you are using ArgoCD for example
-  useHelmHooks: true
-  applyCustomEnv: true
+  #useHelmHooks: true
+  #applyCustomEnv: true
 
 # rpcServer support is experimental / dev purpose only and will later be renamed
 _rpcServer:
