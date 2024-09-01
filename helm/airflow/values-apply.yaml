@@ -281,7 +281,8 @@ env: []
 volumes: []
 
 # VolumeMounts for all airflow containers
-volumeMounts: []
+volumeMounts: #[]
+  - git-sync-ssh-key
 
 # Secrets for all airflow containers
 secret: []
