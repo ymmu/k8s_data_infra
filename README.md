@@ -18,9 +18,10 @@
 
 ### Steps
 러프한 계획. 작업하면서 추가/수정될 듯.
-1. k8s 기본 지식, helm 실습 
-2. 인프라 초안 설계
-3. 인프라 구축 나눠서 작업
-4. 간단한 테스트용 유사? 서비스 인프라 생성 (스트리밍, 배치 작업 테스트)
+1. k8s 기본 지식, helm 실습
+2. 인프라 구축 
+    - [[data infra on k8s] argocd+gitops 세팅 (1)](https://www.notion.so/ymmu/39cf374c9c2e4c6693992847414f83f4?v=cb824b080a4a41e19626bcef159aecfc&p=1330adbc6aa245c1822bb45f521cb2b8&pm=s)
+    - [[data infra on k8s] app of apps 패턴 적용해서 data infra 구축 (2)](https://www.notion.so/ymmu/data-infra-on-k8s-app-of-apps-data-infra-2-a2355112030540319c2686e58a06f6d1?pvs=4)
+3. 간단한 테스트용 유사? 서비스 인프라 생성 (스트리밍, 배치 작업 테스트)
   
   
