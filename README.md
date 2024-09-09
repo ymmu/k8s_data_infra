@@ -22,6 +22,7 @@
 2. 인프라 구축 
     - [[data infra on k8s] argocd+gitops 세팅 (1)](https://www.notion.so/ymmu/39cf374c9c2e4c6693992847414f83f4?v=cb824b080a4a41e19626bcef159aecfc&p=1330adbc6aa245c1822bb45f521cb2b8&pm=s)
     - [[data infra on k8s] app of apps 패턴 적용해서 data infra 구축 (2)](https://www.notion.so/ymmu/data-infra-on-k8s-app-of-apps-data-infra-2-a2355112030540319c2686e58a06f6d1?pvs=4)
+    - [[data infra on k8s] 쿠버네티스 리소스 관리 정리 (3)](https://www.notion.so/ymmu/data-infra-on-k8s-3-bb0fac393fd84685a325a84b6154dba1?pvs=4)
 3. 간단한 테스트용 유사? 서비스 인프라 생성 (스트리밍, 배치 작업 테스트)
   
   
