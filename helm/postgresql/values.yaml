@@ -30,10 +30,10 @@ global:
     ## @param global.postgresql.auth.secretKeys.replicationPasswordKey Name of key in existing secret to use for PostgreSQL credentials (overrides `auth.secretKeys.replicationPasswordKey`). Only used when `global.postgresql.auth.existingSecret` is set.
     ##
     auth:
-      postgresPassword: "admin"
-      username: "admin"
-      password: "admin"
-      database: "postgres"
+      postgresPassword: ""
+      username: ""
+      password: ""
+      database: ""
       existingSecret: ""
       secretKeys:
         adminPasswordKey: ""
@@ -321,15 +321,7 @@ primary:
   ## @param primary.extendedConfiguration Extended PostgreSQL Primary configuration (appended to main or default configuration)
   ## ref: https://github.com/bitnami/containers/tree/main/bitnami/postgresql#allow-settings-to-be-loaded-from-files-other-than-the-default-postgresqlconf
   ##
-  extendedConfiguration: |
-    wal_level = 'logical'                 # CDC를 위한 WAL 레벨
-    max_wal_senders = 10                  # WAL 송신 프로세스 수
-    max_replication_slots = 5             # replication slot 최대 수
-    wal_keep_size = '64MB'                # WAL 로그 유지 크기
-    hot_standby = 'on'                    # Standby 모드 활성화
-    archive_mode = 'on'                   # WAL 아카이브 활성화
-    track_commit_timestamp = 'on'         # 커밋 타임스탬프 활성화
-    max_connections = 100                 # 최대 연결 수
+  extendedConfiguration: ""
   ## @param primary.existingExtendedConfigmap Name of an existing ConfigMap with PostgreSQL Primary extended configuration
   ## NOTE: `primary.extendedConfiguration` will be ignored
   ##
@@ -401,9 +393,7 @@ primary:
   ##   - name: FOO
   ##     value: "bar"
   ##
-  extraEnvVars:
-    - name: POSTGRES_HOST_AUTH_METHOD
-      value: "trust"
+  extraEnvVars: []
   ## @param primary.extraEnvVarsCM Name of existing ConfigMap containing extra env vars for PostgreSQL Primary nodes
   ##
   extraEnvVarsCM: ""
@@ -783,10 +773,10 @@ primary:
     enabled: true
     ## @param primary.persistence.volumeName Name to assign the volume
     ##
-    volumeName: "" #"data"
+    volumeName: "data"
     ## @param primary.persistence.existingClaim Name of an existing PVC to use
     ##
-    existingClaim: "postgres-pvc"
+    existingClaim: ""
     ## @param primary.persistence.mountPath The path the volume will be mounted at
     ## Note: useful when using custom PostgreSQL images
     ##
@@ -1237,7 +1227,7 @@ readReplicas:
     enabled: true
     ## @param readReplicas.persistence.existingClaim Name of an existing PVC to use
     ##
-    existingClaim: "postgres-pvc"
+    existingClaim: ""
     ## @param readReplicas.persistence.mountPath The path the volume will be mounted at
     ## Note: useful when using custom PostgreSQL images
     ##
@@ -1445,7 +1435,7 @@ backup:
 volumePermissions:
   ## @param volumePermissions.enabled Enable init container that changes the owner and group of the persistent volume
   ##
-  enabled: true #alse
+  enabled: false
   ## @param volumePermissions.image.registry [default: REGISTRY_NAME] Init container volume-permissions image registry
   ## @param volumePermissions.image.repository [default: REPOSITORY_NAME/os-shell] Init container volume-permissions image repository
   ## @skip volumePermissions.image.tag Init container volume-permissions image tag (immutable tags are recommended)
