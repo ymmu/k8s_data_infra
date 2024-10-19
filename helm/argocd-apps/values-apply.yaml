@@ -1,0 +1,434 @@
+# -- Deploy Argo CD Applications within this helm release
+# @default -- `{}` (See [values.yaml])
+## Ref: https://github.com/argoproj/argo-cd/blob/master/docs/operator-manual/
+applications: #{}
+  # nginx:
+  #   namespace: argocd
+  #   additionalLabels: {}
+  #   additionalAnnotations: {}
+  #   finalizers:
+  #   - resources-finalizer.argocd.argoproj.io # ‘Application’ 리소스를 삭제하면 관련된 쿠버네티스 리소스(파드 등)까지 같이 삭제하는 옵션
+  #   destination:
+  #     namespace: nginx
+  #     server: https://kubernetes.default.svc # ArgoCD가 설치된 쿠버네티스로 지정
+  #   project: default
+  #   source:
+  #     # helm:  # 애플리케이션 설치 형태를 헬름, 매니페스트 등을 지원
+  #     #   valueFiles:
+  #     #   - ../values-apply.yaml
+  #     path: helm/nginx
+  #     repoURL: https://github.com/ymmu/k8s_data_infra
+  #     targetRevision: HEAD
+  #   syncPolicy:
+  #     automated:
+  #       prune: false
+  #       selfHeal: false
+  #     syncOptions:
+  #     - CreateNamespace=true
+  strimzi-kafka-operator:
+    namespace: argocd
+    additionalLabels: {}
+    additionalAnnotations: {}
+    finalizers:
+    - resources-finalizer.argocd.argoproj.io # ‘Application’ 리소스를 삭제하면 관련된 쿠버네티스 리소스(파드 등)까지 같이 삭제하는 옵션
+    destination:
+      namespace: kafka
+      server: https://kubernetes.default.svc # ArgoCD가 설치된 쿠버네티스로 지정
+    project: default
+    source:
+      # helm:  # 애플리케이션 설치 형태를 헬름, 매니페스트 등을 지원
+      #   valueFiles:
+      #   - ../values-apply.yaml
+      path: helm/strimzi-kafka-operator
+      repoURL: https://github.com/ymmu/k8s_data_infra
+      targetRevision: HEAD
+    syncPolicy:
+      automated:
+        prune: false
+        selfHeal: false
+      syncOptions:
+      - CreateNamespace=true
+  akhq:
+    namespace: argocd
+    additionalLabels: {}
+    additionalAnnotations: {}
+    finalizers:
+    - resources-finalizer.argocd.argoproj.io # ‘Application’ 리소스를 삭제하면 관련된 쿠버네티스 리소스(파드 등)까지 같이 삭제하는 옵션
+    destination:
+      namespace: akhq
+      server: https://kubernetes.default.svc # ArgoCD가 설치된 쿠버네티스로 지정
+    project: default
+    source:
+      helm:  # 애플리케이션 설치 형태를 헬름, 매니페스트 등을 지원
+        valueFiles:
+        - ./values-apply.yaml
+      path: helm/akhq
+      repoURL: https://github.com/ymmu/k8s_data_infra
+      targetRevision: HEAD
+    syncPolicy:
+      automated:
+        prune: false
+        selfHeal: false
+      syncOptions:
+      - CreateNamespace=true
+  postgresql:
+    namespace: postgresql
+    additionalLabels: {}
+    additionalAnnotations: {}
+    finalizers:
+    - resources-finalizer.argocd.argoproj.io # ‘Application’ 리소스를 삭제하면 관련된 쿠버네티스 리소스(파드 등)까지 같이 삭제하는 옵션
+    destination:
+      namespace: postgresql
+      server: https://kubernetes.default.svc # ArgoCD가 설치된 쿠버네티스로 지정
+    project: default
+    source:
+      helm:  # 애플리케이션 설치 형태를 헬름, 매니페스트 등을 지원
+        valueFiles:
+        - ./values-apply.yaml
+      path: helm/postgresql
+      repoURL: https://github.com/ymmu/k8s_data_infra ##'https://charts.bitnami.com/bitnami'
+      targetRevision: HEAD
+    syncPolicy:
+      automated:
+        prune: false
+        selfHeal: false
+      syncOptions:
+      - CreateNamespace=true
+  # airflow:
+  #   namespace: argocd
+  #   additionalLabels: {}
+  #   additionalAnnotations: {}
+  #   finalizers:
+  #   - resources-finalizer.argocd.argoproj.io # ‘Application’ 리소스를 삭제하면 관련된 쿠버네티스 리소스(파드 등)까지 같이 삭제하는 옵션
+  #   destination:
+  #     namespace: airflow
+  #     server: https://kubernetes.default.svc # ArgoCD가 설치된 쿠버네티스로 지정
+  #   project: default
+  #   source:
+  #     helm:  # 애플리케이션 설치 형태를 헬름, 매니페스트 등을 지원
+  #       valueFiles:
+  #       - ./values-apply.yaml
+  #     path: helm/airflow
+  #     repoURL: https://github.com/ymmu/k8s_data_infra
+  #     targetRevision: HEAD
+  #   syncPolicy:
+  #     automated:
+  #       prune: false
+  #       selfHeal: false
+  #     syncOptions:
+  #     - CreateNamespace=true
+  # kube-prometheus-stack:
+  #   namespace: argocd
+  #   additionalLabels: {}
+  #   additionalAnnotations: {}
+  #   finalizers:
+  #   - resources-finalizer.argocd.argoproj.io # ‘Application’ 리소스를 삭제하면 관련된 쿠버네티스 리소스(파드 등)까지 같이 삭제하는 옵션
+  #   destination:
+  #     namespace: monitoring
+  #     server: https://kubernetes.default.svc # ArgoCD가 설치된 쿠버네티스로 지정
+  #   project: default
+  #   source:
+  #     helm:  # 애플리케이션 설치 형태를 헬름, 매니페스트 등을 지원
+  #       valueFiles:
+  #       - ./values-apply.yaml
+  #     path: helm/kube-prometheus-stack
+  #     repoURL: https://github.com/ymmu/k8s_data_infra
+  #     targetRevision: HEAD
+  #   syncPolicy:
+  #     automated:
+  #       prune: false
+  #       selfHeal: false
+  #     syncOptions:
+  #     - CreateNamespace=true
+  # schema-registry:
+  #   namespace: argocd
+  #   additionalLabels: {}
+  #   additionalAnnotations: {}
+  #   finalizers:
+  #   - resources-finalizer.argocd.argoproj.io # ‘Application’ 리소스를 삭제하면 관련된 쿠버네티스 리소스(파드 등)까지 같이 삭제하는 옵션
+  #   destination:
+  #     namespace: schema-registry
+  #     server: https://kubernetes.default.svc # ArgoCD가 설치된 쿠버네티스로 지정
+  #   project: default
+  #   source:
+  #     helm:  # 애플리케이션 설치 형태를 헬름, 매니페스트 등을 지원
+  #       valueFiles:
+  #       - ./values-apply.yaml
+  #     path: helm/schema-registry
+  #     repoURL: https://github.com/ymmu/k8s_data_infra
+  #     targetRevision: HEAD
+  #   syncPolicy:
+  #     automated:
+  #       prune: false
+  #       selfHeal: false
+  #     syncOptions:
+  #     - CreateNamespace=true
+  strimzi-kafka:
+    namespace: argocd
+    additionalLabels: {}
+    additionalAnnotations: {}
+    finalizers:
+    - resources-finalizer.argocd.argoproj.io # ‘Application’ 리소스를 삭제하면 관련된 쿠버네티스 리소스(파드 등)까지 같이 삭제하는 옵션
+    destination:
+      namespace: kafka
+      server: https://kubernetes.default.svc # ArgoCD가 설치된 쿠버네티스로 지정
+    project: default
+    source:
+      path: helm/strimzi-kafka
+      repoURL: https://github.com/ymmu/k8s_data_infra
+      targetRevision: HEAD
+    syncPolicy:
+      automated:
+        prune: false
+        selfHeal: false
+      syncOptions:
+      - CreateNamespace=true
+#  guestbook:
+#    namespace: argocd
+#    additionalLabels: {}
+#    additionalAnnotations: {}
+#    finalizers:
+#    - resources-finalizer.argocd.argoproj.io
+#    project: guestbook
+#    source:
+#      repoURL: https://github.com/argoproj/argocd-example-apps.git
+#      targetRevision: HEAD
+#      path: guestbook
+#      directory:
+#        recurse: true
+#    # ArgoCD v2.6 or later
+#    sources:
+#    - chart: elasticsearch
+#      repoURL: https://helm.elastic.co
+#      targetRevision: 8.5.1
+#    - repoURL: https://github.com/argoproj/argocd-example-apps.git
+#      path: guestbook
+#      targetRevision: HEAD
+#    destination:
+#      server: https://kubernetes.default.svc
+#      namespace: guestbook
+#    syncPolicy:
+#      automated:
+#        prune: false
+#        selfHeal: false
+#      syncOptions:
+#      - CreateNamespace=true
+#    revisionHistoryLimit: null
+#    ignoreDifferences:
+#    - group: apps
+#      kind: Deployment
+#      jsonPointers:
+#      - /spec/replicas
+#    info:
+#    - name: url
+#      value: https://argoproj.github.io/
+
+# -- Deploy Argo CD Projects within this helm release
+# @default -- `{}` (See [values.yaml])
+## Ref: https://github.com/argoproj/argo-cd/blob/master/docs/operator-manual/
+projects: {}
+#  guestbook:
+#    namespace: argocd
+#    additionalLabels: {}
+#    additionalAnnotations: {}
+#    permitOnlyProjectScopedClusters: false
+#    finalizers:
+#    - resources-finalizer.argocd.argoproj.io
+#    description: Example Project
+#    sourceRepos:
+#    - '*'
+#    destinations:
+#    - namespace: guestbook
+#      server: https://kubernetes.default.svc
+#    clusterResourceWhitelist: []
+#    clusterResourceBlacklist: []
+#    namespaceResourceBlacklist:
+#    - group: ''
+#      kind: ResourceQuota
+#    - group: ''
+#      kind: LimitRange
+#    - group: ''
+#      kind: NetworkPolicy
+#      orphanedResources: {}
+#      roles: []
+#    namespaceResourceWhitelist:
+#    - group: 'apps'
+#      kind: Deployment
+#    - group: 'apps'
+#      kind: StatefulSet
+#    orphanedResources: {}
+#    roles: []
+#    syncWindows:
+#    - kind: allow
+#      schedule: '10 1 * * *'
+#      duration: 1h
+#      applications:
+#      - '*-prod'
+#      manualSync: true
+#    signatureKeys:
+#    - keyID: ABCDEF1234567890
+#    sourceNamespaces:
+#    - argocd
+
+# -- Deploy Argo CD ApplicationSets within this helm release
+# @default -- `{}` (See [values.yaml])
+## Ref: https://argo-cd.readthedocs.io/en/stable/operator-manual/applicationset/
+applicationsets: {}
+#  guestbook:
+#    namespace: argocd
+#    additionalLabels: {}
+#    additionalAnnotations: {}
+#    # See PR #10026 (ArgoCD v2.5 or later)
+#    # goTemplate: false
+#    generators:
+#    - git:
+#        repoURL: https://github.com/argoproj/argocd-example-apps.git
+#        revision: HEAD
+#        directories:
+#        - path: guestbook
+#        - path: kustomize-*
+#    # Ref https://argo-cd.readthedocs.io/en/stable/operator-manual/applicationset/Controlling-Resource-Modification/#allow-temporarily-toggling-auto-sync
+#    ignoreApplicationDifferences:
+#    - jsonPointers:
+#      - /spec/syncPolicy
+#    # Progressive Syncs is an experimental feature and it must be explicitly enabled
+#    # Ref: https://argo-cd.readthedocs.io/en/stable/operator-manual/applicationset/Progressive-Syncs/#enabling-progressive-syncs
+#    strategy:
+#      type: RollingSync
+#      rollingSync:
+#        steps:
+#        - matchExpressions:
+#          - key: project
+#            operator: In
+#            values:
+#            - guestbook
+#        - matchExpressions:
+#          - key: project
+#            operator: In
+#            values:
+#            - kustomize-foo
+#            - kustomize-bar
+#    template:
+#      metadata:
+#        name: '{{path.basename}}'
+#        labels:
+#          project: '{{path.basename}}'
+#        annotations: {}
+#      spec:
+#        project: default
+#        source:
+#          repoURL: https://github.com/argoproj/argocd-example-apps.git
+#          targetRevision: HEAD
+#          path: '{{path}}'
+#        destination:
+#          server: https://kubernetes.default.svc
+#          namespace: default
+#        syncPolicy:
+#          automated:
+#            prune: false
+#            selfHeal: false
+#        ignoreDifferences:
+#        - group: apps
+#          kind: Deployment
+#          jsonPointers:
+#          - /spec/replicas
+#        info:
+#        - name: url
+#          value: https://argoproj.github.io/
+#    syncPolicy:
+#      # Set Application finalizer
+#      preserveResourcesOnDeletion: false
+#    # Templating is only available on string type
+#    templatePatch: |
+#      spec:
+#        source:
+#          helm:
+#            valueFiles:
+#            {{- range $valueFile := .valueFiles }}
+#              - {{ $valueFile }}
+#            {{- end }}
+#      {{- if .autoSync }}
+#        syncPolicy:
+#          automated:
+#            prune: {{ .prune }}
+#      {{- end }}
+
+# --  Deploy Argo CD Applications/ApplicationSets/Projects within this helm release
+# @default -- `[]` (See [values.yaml])
+## Ref: https://argo-cd.readthedocs.io/en/stable/operator-manual/applicationset/
+itemTemplates: []
+# - items:
+#     - name: my-appset
+#       generators: &generators
+#         - list:
+#             elements:
+#               - cluster: engineering-dev
+#                 url: https://1.2.3.4
+#               - cluster: engineering-prod
+#                 url: https://2.4.6.8
+#               - cluster: finance-preprod
+#                 url: https://9.8.7.6
+#   template:
+#     apiVersion: argoproj.io/v1alpha1
+#     kind: ApplicationSet
+#     metadata:
+#       name: "{{ .name }}"
+#     spec:
+#       generators: *generators
+#       template:
+#         metadata:
+#           name: "{{`{{cluster}}`}}-guestbook"
+#         spec:
+#           project: my-project
+#           source:
+#             repoURL: https://github.com/infra-team/cluster-deployments.git
+#             targetRevision: HEAD
+#             path: guestbook/{{`{{cluster}}`}}
+#           destination:
+#             server: "{{`{{cluster}}`}}"
+#             namespace: guestbook
+# - items:
+#     - name: my-appset
+#       generators:
+#         - list:
+#             elements:
+#               - cluster: engineering-dev
+#                 url: https://1.2.3.4
+#               - cluster: engineering-prod
+#                 url: https://2.4.6.8
+#               - cluster: finance-preprod
+#                 url: https://9.8.7.6
+#   template: |-
+#     apiVersion: argoproj.io/v1alpha1
+#     kind: ApplicationSet
+#     metadata:
+#       name: {{ .name }}
+#     spec:
+#       generators: {{ toYaml .generators | nindent 4 }}
+#       template:
+#         metadata:
+#           name: '{{`{{cluster}}`}}-guestbook'
+#         spec:
+#           project: my-project
+#           source:
+#             repoURL: https://github.com/infra-team/cluster-deployments.git
+#             targetRevision: HEAD
+#             path: guestbook/{{`{{cluster}}`}}
+#           destination:
+#             server: '{{`{{cluster}}`}}'
+#             namespace: guestbook
+
+# -- DEPRECATED - Please refer [Deprecation Notice](https://github.com/argoproj-labs/argocd-extensions?tab=readme-ov-file#deprecation-notice) for more info.
+# @default -- `{}` (See [values.yaml])
+## This function in tech preview stage, do expect unstability or breaking changes in newer versions. Bump image.tag if necessary.
+## Ref: https://github.com/argoproj-labs/argocd-extensions
+extensions: {}
+#  example:
+#    namespace: argocd
+#    additionalLabels: {}
+#    additionalAnnotations: {}
+#    sources:
+#      - git:
+#          url: https://github.com/argoproj-labs/argocd-example-extension.git
+#      - web:
+#          url: https://github.com/argoproj-labs/argocd-example-extension/releases/download/v0.1.0/extension.tar
