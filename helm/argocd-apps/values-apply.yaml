@@ -94,6 +94,29 @@ applications: #{}
   #       selfHeal: false
   #     syncOptions:
   #     - CreateNamespace=true
+  mysql:
+    namespace: argocd
+    additionalLabels: {}
+    additionalAnnotations: {}
+    finalizers:
+    - resources-finalizer.argocd.argoproj.io # ‘Application’ 리소스를 삭제하면 관련된 쿠버네티스 리소스(파드 등)까지 같이 삭제하는 옵션
+    destination:
+      namespace: mysql
+      server: https://kubernetes.default.svc # ArgoCD가 설치된 쿠버네티스로 지정
+    project: default
+    source:
+      helm:  # 애플리케이션 설치 형태를 헬름, 매니페스트 등을 지원
+        valueFiles:
+        - ./values-apply.yaml
+      path: helm/mysql
+      repoURL: https://github.com/ymmu/k8s_data_infra #https://charts.bitnami.com/bitnami
+      targetRevision: HEAD
+    syncPolicy:
+      automated:
+        prune: false
+        selfHeal: false
+      syncOptions:
+      - CreateNamespace=true
   # airflow:
   #   namespace: argocd
   #   additionalLabels: {}
