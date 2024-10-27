@@ -1,0 +1,31 @@
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaConnect
+metadata:
+  name: my-connect-cluster
+  namespace: kafka
+  annotations:
+    strimzi.io/use-connector-resources: "true"
+spec:
+  image: confluentinc/cp-kafka-connect # 사용할 커넥트 이미지
+  replicas: 1
+  bootstrapServers: my-cluster-kafka-bootstrap:9092 # 배포한 카프카 클러스터 서비스 주소
+  config:
+    config.storage.replication.factor: 1
+    offset.storage.replication.factor: 1
+    status.storage.replication.factor: 1
+    config.providers: file
+    config.providers.file.class: org.apache.kafka.common.config.provider.FileConfigProvider
+    key.converter: io.confluent.connect.avro.AvroConverter
+    key.converter.schema.registry.url: http://schema-registry.kafka.svc.cluster.local:8081 # 배포한 schema registry 서비스 주소
+    value.converter: io.confluent.connect.avro.AvroConverter
+    value.converter.schema.registry.url: http://schema-registry.kafka.svc.cluster.local:8081 # 배포한 schema registry 서비스 주소
+    build: 
+      plugins:
+        - name: debezium-connector-mysql
+          artifacts:
+            - type: tgz
+              url: https://repo1.maven.org/maven2/io/debezium/debezium-connector-mysql/3.0.1.Final/debezium-connector-mysql-3.0.1.Final-plugin.tar.gz 
+        - name: kafka-connect-s3
+          artifacts:
+            - type: zip
+              url: https://d2p6pa21dvn84.cloudfront.net/api/plugins/confluentinc/kafka-connect-s3/versions/10.5.16/confluentinc-kafka-connect-s3-10.5.16.zip
