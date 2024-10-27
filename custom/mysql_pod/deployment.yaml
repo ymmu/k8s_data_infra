@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql-random-crud-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql-random-crud-app
+  template:
+    metadata:
+      labels:
+        app: mysql-random-crud-app
+    spec:
+      containers:
+      - name: mysql-random-crud-app
+        image: myohyun/mysql-random-crud-app:1.13  # 도커 이미지 경로
+        # ports:
+        # - containerPort: 80  # 애플리케이션이 사용하는 포트 (필요에 따라 변경)
+        resources:
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
+          requests:
+            cpu: "250m"
+            memory: "256Mi"
