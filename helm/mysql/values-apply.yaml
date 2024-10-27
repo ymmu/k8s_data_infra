@@ -232,8 +232,8 @@ primary:
     pid-file=/opt/bitnami/mysql/tmp/mysqld.pid
     log-error=/opt/bitnami/mysql/logs/mysqld.log
     log-bin=mysql-bin
-    binlog-format=row  # 바이너리 로그 포맷을 'row'로 설정.설정은 Debezium이 변경 사항을 정확하게 캡처하는 데 필수
-    server-id=1  # 고유한 서버 ID 
+    binlog-format=row
+    server-id=1
     character-set-server=UTF8
     slow_query_log=0
     long_query_time=10.0
