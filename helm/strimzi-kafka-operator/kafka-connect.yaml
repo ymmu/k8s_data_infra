@@ -9,6 +9,11 @@ spec:
   image: confluentinc/cp-kafka-connect # 사용할 커넥트 이미지
   replicas: 1
   bootstrapServers: my-cluster-kafka-bootstrap:9092 # 배포한 카프카 클러스터 서비스 주소
+  externalConfiguration:
+    volumes:
+      - name: connector-config
+        secret:
+          secretName: mysql-credentials
   config:
     config.storage.replication.factor: 1
     offset.storage.replication.factor: 1
