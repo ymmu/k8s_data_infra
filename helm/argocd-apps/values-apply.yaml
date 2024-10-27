@@ -220,10 +220,7 @@ applications: #{}
       server: https://kubernetes.default.svc # ArgoCD가 설치된 쿠버네티스로 지정
     project: default
     source:
-      helm:  # 애플리케이션 설치 형태를 헬름, 매니페스트 등을 지원
-        valueFiles:
-        - ./yamls/kafka-cluster.yaml
-      path: helm/strimzi-kafka-operator
+      path: helm/strimzi-kafka
       repoURL: https://github.com/ymmu/k8s_data_infra
       targetRevision: HEAD
     syncPolicy:
@@ -232,52 +229,46 @@ applications: #{}
         selfHeal: false
       syncOptions:
       - CreateNamespace=true
-  # strimzi-kafka-connect:
-  #   namespace: argocd
-  #   additionalLabels: {}
-  #   additionalAnnotations: {}
-  #   finalizers:
-  #   - resources-finalizer.argocd.argoproj.io # ‘Application’ 리소스를 삭제하면 관련된 쿠버네티스 리소스(파드 등)까지 같이 삭제하는 옵션
-  #   destination:
-  #     namespace: kafka
-  #     server: https://kubernetes.default.svc # ArgoCD가 설치된 쿠버네티스로 지정
-  #   project: default
-  #   source:
-  #     helm:  # 애플리케이션 설치 형태를 헬름, 매니페스트 등을 지원
-  #       valueFiles:
-  #       - ./kafka-connect.yaml
-  #     path: helm/strimzi-kafka-operator
-  #     repoURL: https://github.com/ymmu/k8s_data_infra
-  #     targetRevision: HEAD
-  #   syncPolicy:
-  #     automated:
-  #       prune: false
-  #       selfHeal: false
-  #     syncOptions:
-  #     - CreateNamespace=true
-  # strimzi-schema-registry:
-  #   namespace: argocd
-  #   additionalLabels: {}
-  #   additionalAnnotations: {}
-  #   finalizers:
-  #   - resources-finalizer.argocd.argoproj.io # ‘Application’ 리소스를 삭제하면 관련된 쿠버네티스 리소스(파드 등)까지 같이 삭제하는 옵션
-  #   destination:
-  #     namespace: kafka
-  #     server: https://kubernetes.default.svc # ArgoCD가 설치된 쿠버네티스로 지정
-  #   project: default
-  #   source:
-  #     helm:  # 애플리케이션 설치 형태를 헬름, 매니페스트 등을 지원
-  #       valueFiles:
-  #       - ./schema-registry.yaml
-  #     path: helm/strimzi-kafka-operator
-  #     repoURL: https://github.com/ymmu/k8s_data_infra
-  #     targetRevision: HEAD
-  #   syncPolicy:
-  #     automated:
-  #       prune: false
-  #       selfHeal: false
-  #     syncOptions:
-  #     - CreateNamespace=true
+  strimzi-kafka-connect:
+    namespace: argocd
+    additionalLabels: {}
+    additionalAnnotations: {}
+    finalizers:
+    - resources-finalizer.argocd.argoproj.io # ‘Application’ 리소스를 삭제하면 관련된 쿠버네티스 리소스(파드 등)까지 같이 삭제하는 옵션
+    destination:
+      namespace: kafka
+      server: https://kubernetes.default.svc # ArgoCD가 설치된 쿠버네티스로 지정
+    project: default
+    source:
+      path: helm/strimzi-kafka-connect
+      repoURL: https://github.com/ymmu/k8s_data_infra
+      targetRevision: HEAD
+    syncPolicy:
+      automated:
+        prune: false
+        selfHeal: false
+      syncOptions:
+      - CreateNamespace=true
+  strimzi-schema-registry:
+    namespace: argocd
+    additionalLabels: {}
+    additionalAnnotations: {}
+    finalizers:
+    - resources-finalizer.argocd.argoproj.io # ‘Application’ 리소스를 삭제하면 관련된 쿠버네티스 리소스(파드 등)까지 같이 삭제하는 옵션
+    destination:
+      namespace: kafka
+      server: https://kubernetes.default.svc # ArgoCD가 설치된 쿠버네티스로 지정
+    project: default
+    source:
+      path: helm/strimzi-schema-registry
+      repoURL: https://github.com/ymmu/k8s_data_infra
+      targetRevision: HEAD
+    syncPolicy:
+      automated:
+        prune: false
+        selfHeal: false
+      syncOptions:
+      - CreateNamespace=true
   # strimzi-kafka-connector:
   #   namespace: argocd
   #   additionalLabels: {}
